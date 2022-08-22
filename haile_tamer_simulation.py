@@ -2,11 +2,11 @@ import numpy as np
 
 ## ---------- Supporting Functions ---------- ##
 
-def gen_values(n, distribution='uniform'):
+def gen_values(n, distribution='lognormal'):
     if distribution=='uniform':
         return np.random.uniform(0, 10, n)
-    elif distribution=='normal':
-        return np.random.exponential(scale=1, size=n)
+    elif distribution=='lognormal':
+        return np.random.lognormal(3,1,n)
 
 def new_bid(lbda, bidder_value, increment, curr_bid):
     jump_bool = np.random.binomial(1,lbda)
@@ -36,7 +36,6 @@ def two_bidder_battle(player1_v, player2_v, curr_bid, increment, lbda):
     all_bids = []
     losing_player = 0
 
-    print(first_to_bid)
     if first_to_bid==1:
         bid_old1 = curr_bid
         bid_new1 = -1 #initialize this as -1, out of the distribution support. 
@@ -84,10 +83,9 @@ def two_bidder_battle(player1_v, player2_v, curr_bid, increment, lbda):
 
 ## ---------- Simulation Function ---------- ##
 
-def run_1_simulation(n, lbda, increment, distribution='uniform'):
+def run_1_simulation(n, lbda, increment, distribution='lognormal'):
     # Generate values
     values = list(gen_values(n, distribution))
-    print(values)
     # Initialize current bid
     curr_bid = 0
     # Initialize list of bids
@@ -124,5 +122,5 @@ def run_1_simulation(n, lbda, increment, distribution='uniform'):
 
 
 
-print(run_1_simulation(6,0.3,0.1))
+# print(run_1_simulation(6,0.3,0.1))
 # print(two_bidder_battle(9.20,5.473,9.03,0.5,0.3))
