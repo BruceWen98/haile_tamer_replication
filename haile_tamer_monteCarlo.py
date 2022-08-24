@@ -20,9 +20,21 @@ def run_T_simulations(T, n, lbda, increment, distribution='lognormal'):
 
     return all_values, all_bids, max_bid_dicts
 
-all_values, all_bids, max_bid_dicts = run_T_simulations(T=100, n=6, lbda=0.1, increment=1, distribution='lognormal')
+all_values, all_bids, max_bid_dicts = run_T_simulations(T=25, n=2, lbda=0.1, increment=1, distribution='lognormal')
 
 print(max_bid_dicts)
+
+
+# What if we only took the top 2 bids? Even though there are >2 bidders in each auction.
+def top2(d):
+    top2keys = sorted(d, key=d.get, reverse=True)[:2]
+    out_dict = {}
+    out_dict[top2keys[0]] = d[top2keys[0]]
+    out_dict[top2keys[1]] = d[top2keys[1]]
+    return out_dict
+
+max_bid_dicts_top2only = [top2(max_bid_dict) for max_bid_dict in max_bid_dicts]
+
 
 # # Plot Value & Bid Distributions
 # max_bids = []
@@ -41,11 +53,11 @@ print(max_bid_dicts)
 
 F_U_array = []
 F_L_array = []
-X2 = np.linspace(0, 200, 1000)
+X2 = np.linspace(0, 200, 100)
 for v in tqdm(X2):
-    F_U_v = HTE.F_hat_U(max_bid_dicts,HTE.calc_M(max_bid_dicts),v,0.1)
+    F_U_v = HTE.F_hat_U(max_bid_dicts_top2only,HTE.calc_M(max_bid_dicts_top2only),v,0.1)
     F_U_array.append(F_U_v)
-    F_L_v = HTE.F_hat_L(max_bid_dicts,HTE.calc_M(max_bid_dicts),v,-0.1,increment=1)
+    F_L_v = HTE.F_hat_L(max_bid_dicts_top2only,HTE.calc_M(max_bid_dicts_top2only),v,-0.1,increment=1)
     F_L_array.append(F_L_v)
 
 print(F_U_array)
