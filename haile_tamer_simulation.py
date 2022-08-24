@@ -13,15 +13,15 @@ def new_bid(lbda, bidder_value, increment, curr_bid):
     # No Jump
     if jump_bool==0:
         # Check that after increment bid <= value
-        if curr_bid+increment<=bidder_value:
-            return curr_bid+increment
+        if curr_bid*(1+increment)<=bidder_value:
+            return curr_bid*(1+increment)
         else:
             return -1
     # Jump 
     elif jump_bool==1:
         # Check that after increment bid <= value
-        if curr_bid+increment<=bidder_value:
-            return np.random.uniform(curr_bid+increment, bidder_value)
+        if curr_bid*(1+increment)<=bidder_value:
+            return np.random.uniform(curr_bid*(1+increment), bidder_value)
         else:
             return -1
 
