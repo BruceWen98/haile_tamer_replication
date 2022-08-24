@@ -13,15 +13,15 @@ def new_bid(lbda, bidder_value, increment, curr_bid):
     # No Jump
     if jump_bool==0:
         # Check that after increment bid <= value
-        if curr_bid*(1+increment)<=bidder_value:
-            return curr_bid*(1+increment)
+        if curr_bid+increment<=bidder_value:
+            return curr_bid+increment
         else:
             return -1
     # Jump 
     elif jump_bool==1:
         # Check that after increment bid <= value
-        if curr_bid*(1+increment)<=bidder_value:
-            return np.random.uniform(curr_bid*(1+increment), bidder_value)
+        if curr_bid+increment<=bidder_value:
+            return np.random.uniform(curr_bid+increment, bidder_value)
         else:
             return -1
 
@@ -32,11 +32,13 @@ def pick_2_players(player_list):
 
 def two_bidder_battle(player1_v, player2_v, curr_bid, increment, lbda):
     # Check that after increment bid <= value
-    first_to_bid = np.random.choice([1,2], 1, p=[0.5,0.5])
+    first_to_bid = np.random.choice([1,2], 1, p=[0.5,0.5])[0]
+    p1_bids = []
+    p2_bids = []
     all_bids = []
     losing_player = 0
 
-    if first_to_bid==1:
+    if first_to_bid == 1:
         bid_old1 = curr_bid
         bid_new1 = -1 #initialize this as -1, out of the distribution support. 
         while True:
@@ -47,11 +49,14 @@ def two_bidder_battle(player1_v, player2_v, curr_bid, increment, lbda):
             
             bid_new2 = new_bid(lbda, player2_v, increment, bid_new1)
             if bid_new2 == -1:
+                p1_bids.append(bid_new1)
                 all_bids.append(bid_new1)
                 losing_player = 2
                 break
 
             bid_old1 = bid_new2
+            p1_bids.append(bid_new1)
+            p2_bids.append(bid_new2)
             all_bids.append(bid_new1)
             all_bids.append(bid_new2)
             
@@ -66,17 +71,28 @@ def two_bidder_battle(player1_v, player2_v, curr_bid, increment, lbda):
 
             bid_new1 = new_bid(lbda, player1_v, increment, bid_new2)
             if bid_new1 == -1:
+                p2_bids.append(bid_new2)
                 all_bids.append(bid_new2)
                 losing_player = 1
                 break
 
             bid_old2 = bid_new1
+            p1_bids.append(bid_new1)
+            p2_bids.append(bid_new2)
             all_bids.append(bid_new1)
             all_bids.append(bid_new2)
 
 
-    all_bids = sorted(list(set(all_bids)))
-    return all_bids, losing_player
+    try: 
+        p1_max_bid = max(p1_bids)
+    except ValueError:
+        p1_max_bid = 0
+    try: 
+        p2_max_bid = max(p2_bids)
+    except ValueError:
+        p2_max_bid = 0
+    all_bids = list(sorted(all_bids))
+    return all_bids, p1_max_bid, p2_max_bid, losing_player
 
 
 
@@ -90,6 +106,8 @@ def run_1_simulation(n, lbda, increment, distribution='lognormal'):
     curr_bid = 0
     # Initialize list of bids
     all_bids = []
+    # Initialize dictionary of max bids corresponding to each player.
+    max_bid_dict = {}
 
     # Initialize list of remaining players. Initially just range(len(values)).
     # A player is identified by her index in the list of values.
@@ -105,22 +123,27 @@ def run_1_simulation(n, lbda, increment, distribution='lognormal'):
         player_2v = values[player_2]
 
         # 2. Battle between 2 players.
-        all_bids_1battle, losing_player = two_bidder_battle(player_1v, player_2v, curr_bid, increment, lbda)
+        all_bids_1battle, p1_max_bid, p2_max_bid, losing_player = two_bidder_battle(player_1v, player_2v, curr_bid, increment, lbda)
         
         # 3. Update remaining players, update all bids.
         if losing_player==1:
             remaining_players.remove(player_1)
+            max_bid_dict[player_1] = p1_max_bid
             player_1 = player_2  ## We will assign player_1 as the new player each round.
         elif losing_player==2:
             remaining_players.remove(player_2)
+            max_bid_dict[player_2] = p2_max_bid
         
         if len(all_bids_1battle)>=1:
             all_bids.extend(all_bids_1battle)
             curr_bid = all_bids_1battle[-1]
 
-    return values, all_bids, player_1  ## player_1 is the winning player.
+    # Update winning bidder's max bid.
+    max_bid_dict[player_1] = max(all_bids)
+    
+    return values, all_bids, player_1, max_bid_dict  ## player_1 is the winning player.
 
 
 
-# print(run_1_simulation(6,0.3,0.1))
-# print(two_bidder_battle(9.20,5.473,9.03,0.5,0.3))
+print(run_1_simulation(6,0.1,0.5))
+# print(two_bidder_battle(9.20,9.1,0,0.5,0.4))
