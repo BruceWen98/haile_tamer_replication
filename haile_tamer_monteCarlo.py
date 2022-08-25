@@ -20,7 +20,7 @@ def run_T_simulations(T, n, lbda, increment, distribution='lognormal'):
 
     return all_values, all_bids, max_bid_dicts
 
-all_values, all_bids, max_bid_dicts = run_T_simulations(T=100, n=2, lbda=0.1, increment=0.1, distribution='lognormal')
+all_values, all_bids, max_bid_dicts = run_T_simulations(T=400, n=2, lbda=0.1, increment=0.1, distribution='lognormal')
 
 print(max_bid_dicts)
 
