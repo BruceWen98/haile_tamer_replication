@@ -8,18 +8,18 @@ from tqdm import tqdm
 
 # upperbar{M} = max{num of bidders in each auction in the T auctions}
 # This is the theoretical upper bound on the number of bidders in the T auctions involved.
-def calc_M(max_bid_dicts):
+def calc_M_set(max_bid_dicts):
     list_num_bidders = []
     for max_bid_dict in max_bid_dicts:
-        num_bidders = len(max_bid_dict)
+        num_bidders = max_bid_dict['n']
         list_num_bidders.append(num_bidders)
-    return max(list_num_bidders)
+    return list(np.unique(list_num_bidders))
 
 # Tn is the number of auctions (out of T) that have n bidders.
 def calc_Tn(max_bid_dicts, n):
     count = 0
     for max_bid_dict in max_bid_dicts:
-        if len(max_bid_dict) == n:
+        if max_bid_dict['n'] == n:
             count+=1
     return count
 
@@ -29,11 +29,12 @@ def calc_Ghat(max_bid_dicts,i,n,v):
     Tn = calc_Tn(max_bid_dicts,n)
     count = 0
     for max_bid_dict in max_bid_dicts:
-        if len(max_bid_dict) == n:
-            # ith smallest bid in list_bids. Note that i starts from 1.
-            ith_bid = sorted(list(max_bid_dict.values()))[i-1]
+        if max_bid_dict['n'] == n:
+            # ith smallest bid in the bid dictionary. Note that i are 1,2.
+            ith_bid = sorted([max_bid_dict.get(key) for key in ['1','2']])[i-1]
             if ith_bid <= v:
                 count+=1
+        continue
     return count/Tn
 
 # Equation 9, Haile-Tamer 2003
@@ -42,11 +43,12 @@ def calc_Ghat_inc(max_bid_dicts,n,v,increment):
     Tn = calc_Tn(max_bid_dicts,n)
     count = 0
     for max_bid_dict in max_bid_dicts:
-        if len(max_bid_dict) == n:
+        if max_bid_dict['n'] == n:
             # max bid in max_bid_dict.
-            nt_bid = max(list(max_bid_dict.values()))
+            nt_bid = max([max_bid_dict.get(key) for key in ['1','2']])
             if nt_bid*(1+increment)<= v:  ## Assume that increment is same across all the auctions.
                 count+=1
+        continue
     return count/Tn
 
 
@@ -83,20 +85,44 @@ def smooth_weighted_avg(vec_phis, rho_T):
 
 
 # The final estimation functions, for each v in [0,1].
-def F_hat_U(max_bid_dicts,M,v,rho_T):
+# def F_hat_U(max_bid_dicts,v,rho_T):
+#     vec_phis = []
+#     possible_ns = calc_M_set(max_bid_dicts)
+#     for n in possible_ns: 
+#         for i in range(1,3):    # i = 1,2 only since we only have top 2 bids.
+#             phi = calc_eq10_phi(max_bid_dicts,i,n,v)
+#             vec_phis.append(phi)
+#     vec_phis = [phi for phi in vec_phis if phi == phi]  # remove nan
+#     vec_phis = [phi for phi in vec_phis if phi<=1.0 and phi>=0.0]  # remove values out of range
+#     return smooth_weighted_avg(vec_phis, rho_T)
+
+def F_hat_U(max_bid_dicts,v,rho_T):
     vec_phis = []
-    possible_ns = list(np.unique(list(map(len, max_bid_dicts))))
+    possible_ns = calc_M_set(max_bid_dicts)
     for n in possible_ns: 
-        for i in range(1,n+1):
+        for i in range(1,3):    # i = 1,2 only since we only have top 2 bids.
             phi = calc_eq10_phi(max_bid_dicts,i,n,v)
             vec_phis.append(phi)
     vec_phis = [phi for phi in vec_phis if phi == phi]  # remove nan
     vec_phis = [phi for phi in vec_phis if phi<=1.0 and phi>=0.0]  # remove values out of range
-    return smooth_weighted_avg(vec_phis, rho_T)
+    return min(vec_phis)
 
-def F_hat_L(max_bid_dicts,M,v,rho_T,increment):
+
+# def F_hat_L(max_bid_dicts,v,rho_T,increment):
+#     vec_phis = []
+#     possible_ns = calc_M_set(max_bid_dicts)
+#     for n in possible_ns: 
+#         if n==0 or n==1:
+#             continue
+#         phi = calc_eq11_phi(max_bid_dicts,n,v,increment)
+#         vec_phis.append(phi)
+#     vec_phis = [phi for phi in vec_phis if phi == phi]  # remove nan
+#     vec_phis = [phi for phi in vec_phis if phi<=1.0 and phi>=0.0]  # remove values out of range
+#     return smooth_weighted_avg(vec_phis, rho_T)
+
+def F_hat_L(max_bid_dicts,v,rho_T,increment):
     vec_phis = []
-    possible_ns = list(np.unique(list(map(len, max_bid_dicts))))
+    possible_ns = calc_M_set(max_bid_dicts)
     for n in possible_ns: 
         if n==0 or n==1:
             continue
@@ -104,4 +130,4 @@ def F_hat_L(max_bid_dicts,M,v,rho_T,increment):
         vec_phis.append(phi)
     vec_phis = [phi for phi in vec_phis if phi == phi]  # remove nan
     vec_phis = [phi for phi in vec_phis if phi<=1.0 and phi>=0.0]  # remove values out of range
-    return smooth_weighted_avg(vec_phis, rho_T)
+    return max(vec_phis)
