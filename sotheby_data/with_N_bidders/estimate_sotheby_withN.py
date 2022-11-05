@@ -5,7 +5,7 @@ import haile_tamer_estimation_withN as HTE
 from tqdm import tqdm
 import sys
 
-VAL = "withN"
+VAL = "midVal"
 
 
 # with open('output_dicts_jump2_{}.pickle'.format(VAL), 'rb') as handle:
@@ -19,7 +19,7 @@ with open('output_dicts_ALL_{}.pickle'.format(VAL), 'rb') as handle:
 
 
 # print(output_dicts_ALL)
-X = np.linspace(0, 10, 100)
+X = np.linspace(0, 15, 100)
 
 def estimate_F(X, data):
     F_U_array = []
@@ -46,3 +46,13 @@ plt.xlabel("Value")
 plt.ylabel("CDF")
 plt.title("Bounds on Bidder Values ({})".format(VAL))
 plt.show()
+
+## Save results
+F_U_dicts = []
+F_L_dicts = []
+for i,v in enumerate(X):
+    F_U_dicts.append({"v":v, "F_U":all_F_U[i]})
+    F_L_dicts.append({"v":v, "F_L":all_F_L[i]})
+
+pickle.dump(F_U_dicts, open("./estimate_profits/F_U_dicts.pkl", "wb"))
+pickle.dump(F_L_dicts, open("./estimate_profits/F_L_dicts.pkl", "wb"))

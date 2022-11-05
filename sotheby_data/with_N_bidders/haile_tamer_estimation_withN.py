@@ -1,5 +1,4 @@
 import numpy as np
-import numerical_ODE as NODE
 import optimize as OPT
 from tqdm import tqdm
 
@@ -31,7 +30,7 @@ def calc_Ghat(max_bid_dicts,i,n,v):
     for max_bid_dict in max_bid_dicts:
         if max_bid_dict['n'] == n:
             # ith smallest bid in the bid dictionary. Note that i are 1,2.
-            ith_bid = sorted([max_bid_dict.get(key) for key in ['1','2']])[i-1]
+            ith_bid = sorted([max_bid_dict.get(key) for key in ['1','2']], reverse=True)[n-i]
             if ith_bid <= v:
                 count+=1
         continue
@@ -55,14 +54,12 @@ def calc_Ghat_inc(max_bid_dicts,n,v,increment):
 # Equation 10, Haile-Tamer 2003  (but not the min - later we will use the softmax, eq. 12)
 def calc_eq10_phi(max_bid_dicts,i,n,v):
     H = calc_Ghat(max_bid_dicts,i,n,v)
-    # phi = NODE.newton_method_repeated(i,n,H, max_iters=100,tries=20)
     phi = OPT.calc_phi(i,n,H)
     return phi
 
 # Equation 11, Haile-Tamer 2003  (but not the max - later we will use the softmax)
 def calc_eq11_phi(max_bid_dicts,n,v,increment):
     H = calc_Ghat_inc(max_bid_dicts,n,v,increment)
-    # phi = NODE.newton_method_repeated(n-1,n,H, max_iters=100,tries=20)
     phi = OPT.calc_phi(n-1,n,H)
     return phi
 
@@ -88,8 +85,8 @@ def smooth_weighted_avg(vec_phis, rho_T):
 def F_hat_U(max_bid_dicts,v,rho_T):
     vec_phis = []
     possible_ns = calc_M_set(max_bid_dicts)
-    for n in possible_ns: 
-        for i in range(1,3):    # i = 1,2 only since we only have top 2 bids.
+    for n in possible_ns:
+        for i in range(n-1,n+1):    # i = n-1,n only since we only have top 2 bids.
             phi = calc_eq10_phi(max_bid_dicts,i,n,v)
             vec_phis.append(phi)
     vec_phis = [phi for phi in vec_phis if phi == phi]  # remove nan
