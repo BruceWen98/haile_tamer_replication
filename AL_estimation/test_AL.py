@@ -4,8 +4,9 @@ import AL_profits as AL
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import pickle
+import seaborn as sns
 
-VAL = "highVal"
+VAL = "midVal"
 
 with open('/Users/brucewen/Desktop/honors_thesis/estimation/sotheby_data/with_N_bidders/output_dicts_ALL_{}.pickle'.format(VAL), 'rb') as handle:
     output_dicts_ALL = pickle.load(handle)
@@ -24,7 +25,13 @@ for r in tqdm(X):
     p_lb, p_ub = AL.compute_expected_profit(n, r, output_dicts_ALL, 15, 1, h, variedN=True)
     profits_lb.append(p_lb)
     profits_ub.append(p_ub)
-    
+
+sns.set_style('darkgrid')
+plt.figure(figsize=(10,6), tight_layout=True)
+plt.title("Expected Profit against reserve price curve")
+plt.xlabel("Reserve Price")
+plt.ylabel("Expected Profit")
 plt.scatter(X,profits_lb,color='orange', label='profits low bound', marker='_')
 plt.scatter(X,profits_ub,color='blue', label='profits high bound', marker='|')
+plt.legend()
 plt.show()

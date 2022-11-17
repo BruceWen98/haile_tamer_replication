@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
-
+import seaborn as sns
 
 ##### 1. Estimate Bounds of Profit #####
 
@@ -52,8 +52,14 @@ vsOfF_L = vsOfF(F_L_dicts)
 
 # Estimate Bounds. Seller values good at 1 (relative price to auctioneer's estimate).
 pi1s, pi2s = estimate_bounds(1, F_U_dicts, vsOfF_U, F_L_dicts, vsOfF_L)
-plt.scatter(vsOfF_U,pi2s,color='orange')
-plt.scatter(vsOfF_U,pi1s,color='blue')
+sns.set_style('darkgrid')
+plt.figure(figsize=(10,6), tight_layout=True)
+plt.scatter(vsOfF_U,pi2s,color='orange', marker='|',label="high bound")
+plt.scatter(vsOfF_U,pi1s,color='blue', marker='_', label="low bound")
+plt.title("Bounds of Profit against Reserve (HT)")
+plt.xlabel("Reserve")
+plt.ylabel("Profit")
+
 
 ##### 2. Optimal Range of Reserve Prices, p_L to p_U #####
 
@@ -82,6 +88,7 @@ def find_pL_pU(X, pi1s, pi2s):
     
 
 pL,pU = find_pL_pU(vsOfF_U, pi1s, pi2s)
-plt.axvline(x=pL)
-plt.axvline(x=pU)
+plt.axvline(x=pL, color="blue", label="low optimal reserve bound")
+plt.axvline(x=pU, color="red", label="high optimal reserve bound")
+plt.legend()
 plt.show()
