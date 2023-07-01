@@ -22,7 +22,8 @@ profits_lb = []
 profits_ub = []
 for r in tqdm(X):
     h = X[1] - X[0]
-    p_lb, p_ub = AL.compute_expected_profit(n, r, output_dicts_ALL, 15, 1, h, variedN=True)
+    p_lb, p_ub = AL.compute_expected_profit(n, r, output_dicts_ALL, 15, 1.1, h, variedN=False)
+    # p_lb, p_ub = AL.compute_expected_profit_LLN(n, r, output_dicts_ALL, 15, 1.1, variedN=False)
     profits_lb.append(p_lb)
     profits_ub.append(p_ub)
 

@@ -1,0 +1,155 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=2cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+\usepackage{babel}
+\begin{document}
+\title{Theorems on $\bar{n}$ in AL Varying N}
+\maketitle
+
+\section{Setup}
+
+Recall that if valuations are independent of $N$, the following upper
+bound holds:
+
+\[
+F_{n:n}(v)\leq\sum_{m=n+1}^{\bar{n}}\frac{n}{(m-1)m}F_{m-1:m}(v)+\frac{n}{\bar{n}}F_{\bar{n}-1:\bar{n}}(v)
+\]
+And the following lower bound holds:\\
+\[
+F_{n:n}(v)\geq\sum_{m=n+1}^{\bar{n}}\frac{n}{(m-1)m}F_{m-1:m}(v)+\frac{n}{\bar{n}}\left(\phi_{\bar{n}-1:\bar{n}}\left(F_{\bar{n}-1:\bar{n}}(v)\right)\right)^{\bar{n}}
+\]
+\\
+
+
+\section{Theorems}
+
+\subsection{Theorem 1}
+
+Let $S=\{n+1,n+2,...,\bar{n}\}$ be the set of all possible upper
+limits of summation. The upper bound generated with $\max(S)=\bar{n}$
+is the tightest upper bound for $F_{n:n,s}$ from all of $s\in S$.\\
+\\
+\uline{Proof}:\\
+Define $\bar{n}_{2},\bar{n}_{1}\in\mathbb{N}$ and let $n<\bar{n}_{1}=\bar{n}_{2}-1\leq\bar{n}$.
+Then take the difference of these upper bounds, 
+\begin{align*}
+F_{n:n,\bar{n}_{1}}(v)-F_{n:n,\bar{n}_{2}}(v) & =\frac{n}{\bar{n}_{1}}F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-\frac{n}{\bar{n}_{2}}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)-\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\\
+ & =\frac{n}{\bar{n}_{1}}F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)*\left(\frac{n+n\left(\bar{n}_{2}-1\right)}{\bar{n}_{2}\left(\bar{n}_{2}-1\right)}\right)\\
+ & =\frac{n}{\bar{n}_{1}}F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-\frac{n}{\bar{n}_{2}-1}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\\
+ & =\frac{n}{\bar{n}_{1}}\left(F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right)
+\end{align*}
+Recall that the CDF of the second highest order statistic is $F_{k-1:k}(v)=kF(v)^{k-1}-(k-1)F(v)^{k}$.
+So, \\
+\begin{align*}
+F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v) & =\bar{n}_{1}F^{\bar{n}_{1}-1}(v)-\left(\bar{n}_{1}-1\right)F^{\bar{n}_{1}}(v)-\left[(\bar{n}_{1}+1)F^{\bar{n}_{1}}(v)-\bar{n}_{1}F^{\bar{n}_{1}+1}(v)\right]\\
+ & =\bar{n}_{1}F^{\bar{n}_{1}-1}(v)-2\bar{n}_{1}F^{\bar{n}_{1}}(v)+\bar{n}_{1}F^{\bar{n}_{1}+1}(v)\\
+ & =\bar{n}_{1}\left[F^{\bar{n}_{1}-1}(v)-2F^{\bar{n}_{1}}(v)+F^{\bar{n}_{1}+1}(v)\right]\\
+ & =\bar{n}_{1}F(v)^{\bar{n}_{1}-1}\left[1-2F(v)+F(v)^{2}\right]\\
+ & =\bar{n}_{1}F(v)^{\bar{n}_{1}-1}\left(1-F(v)\right)(1-F(v))\\
+ & \geq0
+\end{align*}
+So $F_{n:n,\bar{n}_{1}}(v)\geq F_{n:n,\bar{n}_{2}}(v)$ for all $v$.
+It follows by an inductive argument that $F_{n:n,\bar{n}}(v)$ is
+indeed the lowest upper bound.\\
+\\
+
+
+\subsection{Theorem 2}
+
+Let $S=\{n+1,n+2,...,\bar{n}\}$ be the set of all possible upper
+limits of summation. If valuations are $i.i.d.$, the lower bounds
+for $F_{n:n,s}$ from $s\in S$ are all equally tight.\\
+\\
+\uline{Proof}:\\
+Define $\bar{n}_{2},\bar{n}_{1}\in\mathbb{N}$ and let $n<\bar{n}_{1}=\bar{n}_{2}-1\leq\bar{n}$.
+Then take the difference of these upper bounds, 
+\begin{align*}
+F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v) & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)+\frac{n}{\bar{n}_{2}}\left[\phi_{\bar{n}_{2}-1:\bar{n}_{2}}\left(F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right)\right]^{\bar{n}_{2}}-\frac{n}{\bar{n}_{1}}\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)\right)\right]^{\bar{n}_{1}}\\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)+\left(\bar{n}_{2}-1\right)\left[\phi_{\bar{n}_{2}-1:\bar{n}_{2}}\left(F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right)\right]^{\bar{n}_{2}}-\left(\bar{n}_{2}\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)\right)\right]^{\bar{n}_{1}}\right\} 
+\end{align*}
+Since valuations are $i.i.d.$, $\phi_{k-1:k}\left(F_{k-1:k}(v)\right)=F(v)$,
+so we have, \\
+\begin{align*}
+F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v) & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)+\bar{n}_{1}F(v)^{\bar{n}_{2}}-\bar{n}_{2}F(v)^{\bar{n}_{1}}\right\} \\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)-\left[\bar{n}_{2}F(v)^{\bar{n}_{1}}-\bar{n}_{1}F(v)^{\bar{n}_{2}}\right]\right\}  & \text{(i)}\\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right\} \\
+ & =0
+\end{align*}
+(i): The CDF of the second highest order statistic is $F_{k-1:k}(v)=kF(v)^{k-1}-(k-1)F(v)^{k}$.\\
+\\
+So we have $F_{n:n,\bar{n}_{2}}(v)=F_{n:n,\bar{n}_{1}}(v)$. Then,
+again following an inductive argument, the bounds for $F_{n:n}$ from
+$S$ are all equally tight.\\
+\\
+
+
+\subsection{Theorem 3}
+
+Let $S=\{n+1,n+2,...,\bar{n}\}$ be the set of all possible upper
+limits of summation. If valuations are common, the lower bounds for
+$F_{n:n,s}$ from $s\in S$ are increasing in in $s$.\\
+\\
+\uline{Proof}:\\
+Define $\bar{n}_{2},\bar{n}_{1}\in\mathbb{N}$ and let $n<\bar{n}_{1}=\bar{n}_{2}-1\leq\bar{n}$.
+If valuations are common, $F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)=F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)\equiv H$.
+So write, \\
+\begin{align*}
+F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v) & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ H+\bar{n}_{1}\left[\phi_{\bar{n}_{2}-1:\bar{n}_{2}}\left(H\right)\right]^{\bar{n}_{2}}-\bar{n}_{2}\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\right\} \\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ H+\bar{n}_{1}\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}+1}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\right\} 
+\end{align*}
+So we want to show that $H+\bar{n}_{1}\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}+1}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\geq0$.\\
+\uline{Lemma}: $\phi_{n:n+1}\left(H\right)\geq\phi_{n-1:n}\left(H\right)$
+for all $n\geq2$ and $H\in[0,1]$. \\
+\uline{Proof}: For reduced notation let $\phi\equiv\phi_{n-1:n}$
+in this proof. Recall that $H=n\phi^{n-1}-(n-1)\phi^{n}$. Now differentiate
+this with respect to $n$. To do so, we need to use the identity $\left(\left(\alpha_{n}\right)^{\beta(n)}\right)'=\alpha(n)^{\beta(n)}\beta'(n)\log\alpha(n)+\alpha(n)^{\beta(n)-1}$.
+So, 
+\begin{align*}
+\left(n\phi^{n-1}\right)'_{n} & =\phi^{n-1}+n\left[\phi^{n-1}\log\phi+\phi^{n-2}(n-1)\phi'\right]\\
+\left((n-1)\phi^{n}\right)'_{n} & =\phi^{n}+(n-1)\left[\phi^{n}\log\phi+\phi^{n-1}n\phi'\right]
+\end{align*}
+Then it follows that,\\
+\[
+\phi^{n-1}+n\left[\phi^{n-1}\log\phi+\phi^{n-2}(n-1)\phi'\right]=\phi^{n}+(n-1)\left[\phi^{n}\log\phi+\phi^{n-1}n\phi'\right]
+\]
+Rearranging, 
+\[
+\phi'=\frac{\phi-\phi^{2}+n\phi\log\phi-(n-1)\phi^{2}\log\phi}{n(n-1)(\phi-1)}
+\]
+Recall that $\phi\in[0,1]$, so to show this derivative is $\geq0$,
+we only need to show that the numerator $\leq0$. We can write, 
+\begin{align*}
+1-\phi+n\log\phi-(n-1)\phi\log\phi & =1-\phi+\left[n-(n-1)\phi\right]\log\phi\\
+ & \leq1-\phi+\left[n-(n-1)\phi\right]\left(\phi-1\right) & \text{(i)}\\
+ & =\left(1-\phi\right)^{2}\left[1-n\right]\\
+ & \leq0
+\end{align*}
+(i): This follows from the Taylor expansion centered at $1$: $\log x=\left(x-1\right)-\frac{(x-1)^{2}}{2}+\frac{(x-1)^{3}}{3}-\frac{(x-1)^{4}}{4}+...$.
+So $\log(x)\leq x-1$ for all $x\in[0,1]$. $\blacksquare$\\
+\\
+Now, again recall that $H=k\phi_{k-1:k}^{k-1}-(k-1)\phi_{k-1:k}^{k}$.
+Substitute $H$ where $k=\bar{n}_{1}+1$, then
+\begin{align*}
+ & H+\bar{n}_{1}\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}+1}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\\
+= & \left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\\
+= & \left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)^{\bar{n}_{1}}-\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)^{\bar{n}_{1}}\right]
+\end{align*}
+But from the Lemma, $\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\geq\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)$.
+So $F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v)\geq0$. It follows
+by an inductive argument that the lower bounds for $F_{n:n,s}$ from
+$s\in S$ are increasing in in $s$, and thus $F_{n:n,\bar{n}}(v)$
+is indeed the greatest lower bound.\\
+\\
+\\
+\\
+\\
+\\
+
+\end{document}

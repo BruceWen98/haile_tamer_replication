@@ -1,0 +1,114 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+\usepackage{babel}
+\begin{document}
+\title{A Theorem on $n$ }
+\date{January 11, 2023}
+\author{Bruce Wen}
+\maketitle
+
+\section{Theorem}
+
+From Haile Tamer (2003), define the strictly increasing differentiable
+function $\phi_{i:n}(H):[0,1]\to[0,1]$ as the implicit solution to
+\[
+H=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{\phi}s^{i-1}(1-s)^{n-i}ds
+\]
+Define $G_{n:n}(v)$ as the highest order statistic among a known
+$n$ bidders empirical distribution function with support $[\text{\ensuremath{\underbar{v}}},\bar{v}]$.\\
+Define the function, $f_{n}(v):[0,1]\to[0,1]$, 
+\[
+f_{n}(v)=\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(v)\right)
+\]
+\\
+\textbf{Theorem 1}: Suppose $n\in\mathbb{N}$ and $n>1$. Then $f_{n}(v)$
+is decreasing in $n\in\mathbb{N}$, for all $\text{\ensuremath{\underbar{v}}}\leq v\leq\bar{v}$.\\
+\\
+\uline{Note}: Why is $f_{n}(v)$ like this? It is used in estimating
+the $F_{n:n}$ (true distribution - $G$ is the observed distribution)
+order statistic (theorem by Kirill Ponomarev 2023) as, 
+\[
+\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(v)\right)\leq F_{n:n}(v)\leq G_{n:n}(b)
+\]
+\\
+\\
+\\
+
+
+\section{Proof}
+
+\textbf{Lemma 3}: $f_{n}(v):[0,1]\to[0,1]$, $f_{n}(v)=\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(v)\right)$
+can be rewritten as:\\
+\[
+t^{n}=ny^{\frac{n-1}{n}}-(n-1)y
+\]
+\uline{Proof}: \\
+The function can be rewritten, 
+\begin{align*}
+\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(v)\right) & =\phi_{n-1:n}\left(G_{n:n}(v)\right)^{n}\\
+ & =\phi_{n-1:n}\left(v^{n}\right)^{n}
+\end{align*}
+Let $y\equiv\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(v)\right)$ and
+$t\equiv v$. Then, $y=\phi_{n-1:n}\left(t^{n}\right)^{n}$. And so,
+\[
+y^{\frac{1}{n}}=\phi_{n-1:n}\left(t^{n}\right)
+\]
+Then, 
+\begin{align*}
+t^{n} & =\frac{n!}{(n-2)!}\int_{0}^{y^{\frac{1}{n}}}s^{n-2}(1-s)ds\\
+ & =n(n-1)\left[\frac{1}{n-1}s^{n-1}-\frac{1}{n}s^{n}\right]_{0}^{y^{\frac{1}{n}}}\\
+ & =ny^{\frac{n-1}{n}}-(n-1)y
+\end{align*}
+\\
+\textbf{Lemma 4}: Define the implicit equation, 
+\[
+t^{n}=ny^{\frac{n-1}{n}}-(n-1)y
+\]
+For any fixed $t\in[0,1]$, and $n\geq2$ integers, $y\in[0,1]$ is
+decreasing in $n$.\\
+\\
+\\
+\\
+\\
+\\
+\textbf{\uline{REDACTED}}\\
+\textbf{Lemma 1}: $G_{n+1:n+1}(v)\succsim_{\text{FOSD}}G_{n:n}(v)$
+for all $n\in\mathbb{N}$ and all $v$.\\
+\uline{Proof}:\\
+Take a common distribution $G$ where valuations are drawn from. In
+1 scenario, $n+1$ valuations are drawn from $G$, and we can define
+the CDF of the highest order statistic,$G_{n+1:n+1}(v)=G(v)^{n+1}$.
+In the other scenario, $n$ valuations are drawn from $G$, and the
+CDF for this highest order statistic is, $G_{n:n}(v)=G(v)^{n}$. Thus,
+\[
+G_{n+1:n+1}(v)\leq G_{n:n}(v)
+\]
+for all $v$ and $n$, and so $G_{n+1:n+1}(v)\succsim_{\text{FOSD}}G_{n:n}(v)$.
+$\blacksquare$\\
+\\
+\\
+We just need to prove that $\phi_{n:n}^{-1}\phi_{n-1:n}\left(t\right)$
+is decreasing in $n$ for all $t\in[0,1]$. \\
+\\
+First, see that $\phi_{n:n}^{-1}(x)=x^{n}$: 
+\begin{align*}
+H & =\frac{n!}{(n-n)!(n-1)!}\int_{0}^{\phi}s^{n-1}(1-s)^{n-n}ds\\
+ & =n\int_{0}^{\phi}s^{n-1}ds\\
+ & =n\frac{1}{n}\left[s^{n}\right]_{0}^{\phi}\\
+ & =\phi^{n}
+\end{align*}
+\\
+It remains to show that $\phi_{n-1:n}\left(t\right)^{n}$ is decreasing
+in $n$ for all $t\in(0,1)$. \\
+\\
+\textbf{Lemma 2}: $\phi_{n-1:n}\left(t\right)$ is decreasing(?increasing?)
+in $n$ for all $t\in(0,1)$. \\
+\\
+
+\end{document}

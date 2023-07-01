@@ -1,0 +1,635 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\headheight 2cm
+\headsep 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Theorems on 
+\begin_inset Formula $\bar{n}$
+\end_inset
+
+ in AL Varying N
+\end_layout
+
+\begin_layout Section
+Setup
+\end_layout
+
+\begin_layout Standard
+Recall that if valuations are independent of 
+\begin_inset Formula $N$
+\end_inset
+
+, the following upper bound holds:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F_{n:n}(v)\leq\sum_{m=n+1}^{\bar{n}}\frac{n}{(m-1)m}F_{m-1:m}(v)+\frac{n}{\bar{n}}F_{\bar{n}-1:\bar{n}}(v)
+\]
+
+\end_inset
+
+And the following lower bound holds:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+F_{n:n}(v)\geq\sum_{m=n+1}^{\bar{n}}\frac{n}{(m-1)m}F_{m-1:m}(v)+\frac{n}{\bar{n}}\left(\phi_{\bar{n}-1:\bar{n}}\left(F_{\bar{n}-1:\bar{n}}(v)\right)\right)^{\bar{n}}
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Theorems
+\end_layout
+
+\begin_layout Subsection
+Theorem 1
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $S=\{n+1,n+2,...,\bar{n}\}$
+\end_inset
+
+ be the set of all possible upper limits of summation.
+ The upper bound generated with 
+\begin_inset Formula $\max(S)=\bar{n}$
+\end_inset
+
+ is the tightest upper bound for 
+\begin_inset Formula $F_{n:n,s}$
+\end_inset
+
+ from all of 
+\begin_inset Formula $s\in S$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Proof
+\bar default
+:
+\begin_inset Newline newline
+\end_inset
+
+Define 
+\begin_inset Formula $\bar{n}_{2},\bar{n}_{1}\in\mathbb{N}$
+\end_inset
+
+ and let 
+\begin_inset Formula $n<\bar{n}_{1}=\bar{n}_{2}-1\leq\bar{n}$
+\end_inset
+
+.
+ Then take the difference of these upper bounds, 
+\begin_inset Formula 
+\begin{align*}
+F_{n:n,\bar{n}_{1}}(v)-F_{n:n,\bar{n}_{2}}(v) & =\frac{n}{\bar{n}_{1}}F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-\frac{n}{\bar{n}_{2}}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)-\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\\
+ & =\frac{n}{\bar{n}_{1}}F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)*\left(\frac{n+n\left(\bar{n}_{2}-1\right)}{\bar{n}_{2}\left(\bar{n}_{2}-1\right)}\right)\\
+ & =\frac{n}{\bar{n}_{1}}F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-\frac{n}{\bar{n}_{2}-1}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\\
+ & =\frac{n}{\bar{n}_{1}}\left(F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right)
+\end{align*}
+
+\end_inset
+
+Recall that the CDF of the second highest order statistic is 
+\begin_inset Formula $F_{k-1:k}(v)=kF(v)^{k-1}-(k-1)F(v)^{k}$
+\end_inset
+
+.
+ So, 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v) & =\bar{n}_{1}F^{\bar{n}_{1}-1}(v)-\left(\bar{n}_{1}-1\right)F^{\bar{n}_{1}}(v)-\left[(\bar{n}_{1}+1)F^{\bar{n}_{1}}(v)-\bar{n}_{1}F^{\bar{n}_{1}+1}(v)\right]\\
+ & =\bar{n}_{1}F^{\bar{n}_{1}-1}(v)-2\bar{n}_{1}F^{\bar{n}_{1}}(v)+\bar{n}_{1}F^{\bar{n}_{1}+1}(v)\\
+ & =\bar{n}_{1}\left[F^{\bar{n}_{1}-1}(v)-2F^{\bar{n}_{1}}(v)+F^{\bar{n}_{1}+1}(v)\right]\\
+ & =\bar{n}_{1}F(v)^{\bar{n}_{1}-1}\left[1-2F(v)+F(v)^{2}\right]\\
+ & =\bar{n}_{1}F(v)^{\bar{n}_{1}-1}\left(1-F(v)\right)(1-F(v))\\
+ & \geq0
+\end{align*}
+
+\end_inset
+
+So 
+\begin_inset Formula $F_{n:n,\bar{n}_{1}}(v)\geq F_{n:n,\bar{n}_{2}}(v)$
+\end_inset
+
+ for all 
+\begin_inset Formula $v$
+\end_inset
+
+.
+ It follows by an inductive argument that 
+\begin_inset Formula $F_{n:n,\bar{n}}(v)$
+\end_inset
+
+ is indeed the lowest upper bound.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Theorem 2
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $S=\{n+1,n+2,...,\bar{n}\}$
+\end_inset
+
+ be the set of all possible upper limits of summation.
+ If valuations are 
+\begin_inset Formula $i.i.d.$
+\end_inset
+
+, the lower bounds for 
+\begin_inset Formula $F_{n:n,s}$
+\end_inset
+
+ from 
+\begin_inset Formula $s\in S$
+\end_inset
+
+ are all equally tight.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Proof
+\bar default
+:
+\begin_inset Newline newline
+\end_inset
+
+Define 
+\begin_inset Formula $\bar{n}_{2},\bar{n}_{1}\in\mathbb{N}$
+\end_inset
+
+ and let 
+\begin_inset Formula $n<\bar{n}_{1}=\bar{n}_{2}-1\leq\bar{n}$
+\end_inset
+
+.
+ Then take the difference of these upper bounds, 
+\begin_inset Formula 
+\begin{align*}
+F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v) & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)+\frac{n}{\bar{n}_{2}}\left[\phi_{\bar{n}_{2}-1:\bar{n}_{2}}\left(F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right)\right]^{\bar{n}_{2}}-\frac{n}{\bar{n}_{1}}\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)\right)\right]^{\bar{n}_{1}}\\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)+\left(\bar{n}_{2}-1\right)\left[\phi_{\bar{n}_{2}-1:\bar{n}_{2}}\left(F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right)\right]^{\bar{n}_{2}}\right\} \\
+ & -\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left(\bar{n}_{2}\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)\right)\right]^{\bar{n}_{1}}
+\end{align*}
+
+\end_inset
+
+Since valuations are 
+\begin_inset Formula $i.i.d.$
+\end_inset
+
+, 
+\begin_inset Formula $\phi_{k-1:k}\left(F_{k-1:k}(v)\right)=F(v)$
+\end_inset
+
+, so we have, 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v) & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)+\bar{n}_{1}F(v)^{\bar{n}_{2}}-\bar{n}_{2}F(v)^{\bar{n}_{1}}\right\} \\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)-\left[\bar{n}_{2}F(v)^{\bar{n}_{1}}-\bar{n}_{1}F(v)^{\bar{n}_{2}}\right]\right\}  & \text{(i)}\\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)-F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)\right\} \\
+ & =0
+\end{align*}
+
+\end_inset
+
+(i): The CDF of the second highest order statistic is 
+\begin_inset Formula $F_{k-1:k}(v)=kF(v)^{k-1}-(k-1)F(v)^{k}$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+So we have 
+\begin_inset Formula $F_{n:n,\bar{n}_{2}}(v)=F_{n:n,\bar{n}_{1}}(v)$
+\end_inset
+
+.
+ Then, again following an inductive argument, the bounds for 
+\begin_inset Formula $F_{n:n}$
+\end_inset
+
+ from 
+\begin_inset Formula $S$
+\end_inset
+
+ are all equally tight.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Theorem 3
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $S=\{n+1,n+2,...,\bar{n}\}$
+\end_inset
+
+ be the set of all possible upper limits of summation.
+ If valuations are common, the lower bounds for 
+\begin_inset Formula $F_{n:n,s}$
+\end_inset
+
+ from 
+\begin_inset Formula $s\in S$
+\end_inset
+
+ are increasing in in 
+\begin_inset Formula $s$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Proof
+\bar default
+:
+\begin_inset Newline newline
+\end_inset
+
+Define 
+\begin_inset Formula $\bar{n}_{2},\bar{n}_{1}\in\mathbb{N}$
+\end_inset
+
+ and let 
+\begin_inset Formula $n<\bar{n}_{1}=\bar{n}_{2}-1\leq\bar{n}$
+\end_inset
+
+.
+ If valuations are common, 
+\begin_inset Formula $F_{\bar{n}_{2}-1:\bar{n}_{2}}(v)=F_{\bar{n}_{1}-1:\bar{n}_{1}}(v)\equiv H$
+\end_inset
+
+.
+ So write, 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v) & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ H+\bar{n}_{1}\left[\phi_{\bar{n}_{2}-1:\bar{n}_{2}}\left(H\right)\right]^{\bar{n}_{2}}-\bar{n}_{2}\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\right\} \\
+ & =\frac{n}{\bar{n}_{2}(\bar{n}_{2}-1)}\left\{ H+\bar{n}_{1}\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}+1}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\right\} 
+\end{align*}
+
+\end_inset
+
+So we want to show that 
+\begin_inset Formula $H+\bar{n}_{1}\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}+1}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\geq0$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Lemma
+\bar default
+: 
+\begin_inset Formula $\phi_{n:n+1}\left(H\right)\geq\phi_{n-1:n}\left(H\right)$
+\end_inset
+
+ for all 
+\begin_inset Formula $n\geq2$
+\end_inset
+
+ and 
+\begin_inset Formula $H\in[0,1]$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Proof
+\bar default
+: For reduced notation let 
+\begin_inset Formula $\phi\equiv\phi_{n-1:n}$
+\end_inset
+
+ in this proof.
+ Recall that 
+\begin_inset Formula $H=n\phi^{n-1}-(n-1)\phi^{n}$
+\end_inset
+
+.
+ Now differentiate this with respect to 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ To do so, we need to use the identity 
+\begin_inset Formula $\left(\left(\alpha_{n}\right)^{\beta(n)}\right)'=\alpha(n)^{\beta(n)}\beta'(n)\log\alpha(n)+\alpha(n)^{\beta(n)-1}$
+\end_inset
+
+.
+ So, 
+\begin_inset Formula 
+\begin{align*}
+\left(n\phi^{n-1}\right)'_{n} & =\phi^{n-1}+n\left[\phi^{n-1}\log\phi+\phi^{n-2}(n-1)\phi'\right]\\
+\left((n-1)\phi^{n}\right)'_{n} & =\phi^{n}+(n-1)\left[\phi^{n}\log\phi+\phi^{n-1}n\phi'\right]
+\end{align*}
+
+\end_inset
+
+Then it follows that,
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\phi^{n-1}+n\left[\phi^{n-1}\log\phi+\phi^{n-2}(n-1)\phi'\right]=\phi^{n}+(n-1)\left[\phi^{n}\log\phi+\phi^{n-1}n\phi'\right]
+\]
+
+\end_inset
+
+Rearranging, 
+\begin_inset Formula 
+\[
+\phi'=\frac{\phi-\phi^{2}+n\phi\log\phi-(n-1)\phi^{2}\log\phi}{n(n-1)(\phi-1)}
+\]
+
+\end_inset
+
+Recall that 
+\begin_inset Formula $\phi\in[0,1]$
+\end_inset
+
+, so to show this derivative is 
+\begin_inset Formula $\geq0$
+\end_inset
+
+, we only need to show that the numerator 
+\begin_inset Formula $\leq0$
+\end_inset
+
+.
+ We can write, 
+\begin_inset Formula 
+\begin{align*}
+1-\phi+n\log\phi-(n-1)\phi\log\phi & =1-\phi+\left[n-(n-1)\phi\right]\log\phi\\
+ & \leq1-\phi+\left[n-(n-1)\phi\right]\left(\phi-1\right) & \text{(i)}\\
+ & =\left(1-\phi\right)^{2}\left[1-n\right]\\
+ & \leq0
+\end{align*}
+
+\end_inset
+
+(i): This follows from the Taylor expansion centered at 
+\begin_inset Formula $1$
+\end_inset
+
+: 
+\begin_inset Formula $\log x=\left(x-1\right)-\frac{(x-1)^{2}}{2}+\frac{(x-1)^{3}}{3}-\frac{(x-1)^{4}}{4}+...$
+\end_inset
+
+.
+ So 
+\begin_inset Formula $\log(x)\leq x-1$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in[0,1]$
+\end_inset
+
+.
+ 
+\begin_inset Formula $\blacksquare$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Now, again recall that 
+\begin_inset Formula $H=k\phi_{k-1:k}^{k-1}-(k-1)\phi_{k-1:k}^{k}$
+\end_inset
+
+.
+ Substitute 
+\begin_inset Formula $H$
+\end_inset
+
+ where 
+\begin_inset Formula $k=\bar{n}_{1}+1$
+\end_inset
+
+, then
+\begin_inset Formula 
+\begin{align*}
+ & H+\bar{n}_{1}\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}+1}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\\
+= & \left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\right]^{\bar{n}_{1}}-\left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)\right]^{\bar{n}_{1}}\\
+= & \left(\bar{n}_{1}+1\right)\left[\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)^{\bar{n}_{1}}-\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)^{\bar{n}_{1}}\right]
+\end{align*}
+
+\end_inset
+
+But from the Lemma, 
+\begin_inset Formula $\phi_{\bar{n}_{1}:\bar{n}_{1}+1}\left(H\right)\geq\phi_{\bar{n}_{1}-1:\bar{n}_{1}}\left(H\right)$
+\end_inset
+
+.
+ So 
+\begin_inset Formula $F_{n:n,\bar{n}_{2}}(v)-F_{n:n,\bar{n}_{1}}(v)\geq0$
+\end_inset
+
+.
+ It follows by an inductive argument that the lower bounds for 
+\begin_inset Formula $F_{n:n,s}$
+\end_inset
+
+ from 
+\begin_inset Formula $s\in S$
+\end_inset
+
+ are increasing in in 
+\begin_inset Formula $s$
+\end_inset
+
+, and thus 
+\begin_inset Formula $F_{n:n,\bar{n}}(v)$
+\end_inset
+
+ is indeed the greatest lower bound.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

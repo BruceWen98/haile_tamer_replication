@@ -1,0 +1,62 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=2cm}
+\usepackage{amstext}
+\usepackage{esint}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+\usepackage{babel}
+\begin{document}
+\title{Aradillas-Lopez Kernel Density Estimation}
+\maketitle
+
+\section{Revised Estimation Formula using KDE}
+
+Previously, we implemented the AL bounds as follows:
+\[
+\frac{1}{T}\sum_{i=1}^{T}max\{r,b_{n-1:n}^{i}\}-v_{0}-G_{n:n}(r)(r-v_{0})\leq\pi_{n}(r)\leq\frac{1}{T}\sum_{i=1}^{T}max\{r,b_{n:n}^{i}\}-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})
+\]
+where $T$ is the total number of auctions in the sample, and $b_{n-1:n}^{i}$
+is the $2^{nd}$ highest bid in the $i^{th}$ auction in the data.\\
+\\
+However, this estimation method produces AL bounds that are not very
+smooth. To do some smoothing, we re-implement the estimation using
+a Kernel Density Estimator, with
+\[
+\hat{g}_{n-1:n}(v)=\frac{1}{Th}\sum_{i=1}^{T}\mathcal{K}\left(\frac{v-b_{n-1:n}^{i}}{h}\right)
+\]
+\[
+\hat{g}_{n:n}(v)=\frac{1}{Th}\sum_{i=1}^{T}\mathcal{K}\left(\frac{v-b_{n:n}^{i}}{h}\right)
+\]
+where $T$ is the total number of auctions in the sample, $h$ is
+the smoothing parameter for a chosen kernel $\mathcal{K}$, and $b_{n-1:n}^{i}$,
+$b_{n:n}^{i}$ are the second highest bid and the highest bid in the
+$i^{th}$ auction respectively. \\
+\\
+Furthermore, set the CDF, 
+\[
+G_{n:n}(r)=\int_{0}^{r}\hat{g}_{n:n}(v)dv
+\]
+Then plug these in the equation to create the estimator, 
+\[
+\int_{0}^{\infty}\text{max}\{r,v\}\hat{g}_{n-1:n}(v)dv-v_{0}-G_{n:n}(r)(r-v_{0})\leq\pi_{n}(r)\leq\int_{0}^{\infty}\text{max}\{r,v\}\hat{g}_{n:n}(v)dv-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})
+\]
+I select the Gaussian kernel, with smoothing parameter determined
+by the Improved Sheather-Jones (ISJ) method.\\
+\\
+\\
+\textbf{\uline{Lemma}}: $\pi_{L}$ and $\pi_{U}$ are both continous.\\
+\\
+\[
+F_{n:n}(v)\leq\bar{F}_{n:n}(v)\equiv\sum_{m=n+1}^{\bar{n}}\frac{n}{(m-1)m}F_{m-1:m}(v)+\frac{n}{\bar{n}}F_{\bar{n}-1:\bar{n}}(v)
+\]
+\[
+F_{n:n}(v)\geq\text{\ensuremath{\underbar{F}}}_{n:n}(v)\equiv\sum_{m=n+1}^{\bar{n}}\frac{n}{(m-1)m}F_{m-1:m}(v)+\frac{n}{\bar{n}}\left(\phi_{\bar{n}}\left(F_{\bar{n}-1:\bar{n}}(v)\right)\right)^{\bar{n}}
+\]
+\\
+\\
+ 
+\end{document}

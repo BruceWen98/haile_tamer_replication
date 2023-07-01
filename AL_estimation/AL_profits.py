@@ -1,8 +1,15 @@
 import numpy as np
 from tqdm import tqdm
 import stieltjes
+import math
 import scipy.integrate as integrate
 from scipy.optimize import minimize
+from KDEpy import FFTKDE    # Kernel Density Estimation
+import matplotlib.pyplot as plt
+import AL_inference as ALinf
+
+import warnings
+warnings.filterwarnings("ignore")
 
 ########## CODE for Aradillas-Lopez 2013 ##########
 
@@ -11,12 +18,16 @@ from scipy.optimize import minimize
 def integrate_0_to_phi(n,phi):
     def f(s): 
         return (s**(n-2) * (1-s))
-    return n * (n-1) * integrate.quad(f,0,phi)[0]
+    return n * (n-1) * integrate.romberg(f,0,phi)
 
 def calc_phi(n,H):
     bds = [(0,1)]
+    # possibilities = [
+    #     minimize(lambda phi: (integrate_0_to_phi(n,phi)-H)**2, x0=[0.7], method="Powell", bounds = bds).x[0],
+    #     minimize(lambda phi: (integrate_0_to_phi(n,phi)-H)**2, x0=[0.7], method="Nelder-Mead", bounds = bds).x[0],
+    #     minimize(lambda phi: (integrate_0_to_phi(n,phi)-H)**2, x0=[0.7], method="L-BFGS-B", bounds = bds).x[0],
+    # ]
     return minimize(lambda phi: (integrate_0_to_phi(n,phi)-H)**2, x0=[0.7], method="Powell", bounds = bds).x[0]
-
 
 
 ##### 1. Supporting Functions #####
@@ -38,83 +49,126 @@ def calc_Tn(max_bid_dicts, n):
             count+=1
     return count
 
-# Equation 8, Haile-Tamer 2003
-## \hat{G}_{i:n}(v) is the empirical distribution function (CDF).
-## Here, i=n-1 or i=n.
-def calc_Ghat(max_bid_dicts,i,n,v):
-    Tn = calc_Tn(max_bid_dicts,n)
-    count = 0
+# Search for the nearest idx(value) in a sorted array, i.e. v_n1n or v_nn. This is to the left of the value.
+def find_nearest(array,value):
+    idx = np.searchsorted(array, value, side="left")
+    if idx > 0 and (idx == len(array) or math.fabs(value - array[idx-1]) < math.fabs(value - array[idx])):
+        return idx-1
+    else:
+        return idx
+
+# For Kernel Density Estimation
+def ghat_KDE(max_bid_dicts,i,n, ker='gaussian', bandwidth="ISJ"): # ISJ is the improved Sheather-Jones algorithm
+    Xi = [] # This is b_{i:n}, the list of the ith highest bids in the Tn auctions.
     for max_bid_dict in max_bid_dicts:
         if max_bid_dict['n'] == n:
-            # ith smallest bid in the bid dictionary. Note that i are n-1, n.
+            # ith highest bid in the bid dictionary. Note that i are n-1, n.
             ith_bid = sorted([max_bid_dict.get(key) for key in ['1','2']], reverse=True)[n-i]
-            if ith_bid <= v:
-                count+=1
+            Xi.append(ith_bid)
         continue
-    return count/Tn
+    
+    # v, g_hat_v = FFTKDE(kernel=ker, bw=bandwidth).fit(Xi).evaluate()
+    kde = FFTKDE(kernel=ker, bw=bandwidth)
+    v, g_hat_v = kde.fit(Xi).evaluate()
+    h = kde.bw
+    return v, g_hat_v, h
+
+def KDE_pdf_to_cdf(v, g_hat_v):
+    sum_g_hat_v = np.sum(g_hat_v)
+    G_hat_v = np.zeros(len(v))
+    for k in range(len(v)):
+        G_hat_v[k] = np.sum(g_hat_v[:k])/sum_g_hat_v
+    return G_hat_v
 
 
 ##### 2. Estimation of bounds. (Valuations are Positively Dependent) #####
-### 2a. Estimation of the F_{n-1:n} bounds. ###
-def Gnn(n, v, max_bid_dicts):
-    return calc_Ghat(max_bid_dicts, n, n, v)
+### 2c. Estimation of the F_{n:n} bounds using KDE instead. ###
+def G_KDE(v, v_arr, G_hat_v):
+    return G_hat_v[find_nearest(v_arr, v)]
 
-def Gn1n(n, v, max_bid_dicts):
-    return calc_Ghat(max_bid_dicts, n-1, n, v)
+def phiGnnN_KDE(n,v, v_arr, G_hat_v):
+    return calc_phi(n, G_KDE(v,v_arr,G_hat_v)) ** n
 
-def Fn1n(n, v, max_bid_dicts):
-    return Gnn(n, v, max_bid_dicts), Gn1n(n, v, max_bid_dicts)
-
-### 2b. Estimation of the F_{n:n} bounds. ###
-def phiGnnN(n, v, max_bid_dicts):
-    return calc_phi(n, Gnn(n, v, max_bid_dicts)) ** n
-
-def Fnn(n, v, max_bid_dicts):
-    return phiGnnN(n, v, max_bid_dicts), Gnn(n, v, max_bid_dicts)
+def Fnn_KDE(n,v, v_arr, G_hat_v):
+    return phiGnnN_KDE(n,v, v_arr, G_hat_v), G_KDE(v, v_arr, G_hat_v)
 
 
+##### 3. Variations in N, the number of bidders. (pg. 498 Lemma 4, AL-Gandhi-Quint) ##### 
+## 3b. Same as 3a, but using KDE instead.
+def Gn1n_KDE(n, max_bid_dicts):
+    v_arr, g_hat_v, h = ghat_KDE(max_bid_dicts, n-1, n)
+    G_hat_v = KDE_pdf_to_cdf(v_arr, g_hat_v)
+    return v_arr, G_hat_v, h
 
-##### 3. Variations in N, the number of bidders. (pg. 498 Lemma 4, AL) ##### 
+def getAll_KDEs(n, max_bid_dicts):  # Get all KDEs for m>=n+1
+    Ns = calc_N_set(max_bid_dicts)
+    KDEs = {}
+    loop = [m for m in Ns if m >= n+1]  # m >= n+1, m<=N_bar
+    for m in loop:
+        m_v_arr, m_G_hat_v, _ = Gn1n_KDE(m, max_bid_dicts)
+        KDEs[m] = (m_v_arr, m_G_hat_v)
+    return KDEs
 
-def computeFm1ms(n, v, max_bid_dicts):
+def get_v_Gn1n_KDE(m,v,KDEs):
+    v_arr, G_hat_v = KDEs[m]
+    return G_KDE(v, v_arr, G_hat_v)
+
+def computeFm1ms_KDE(n, v, max_bid_dicts, KDEs):
     Ns = calc_N_set(max_bid_dicts)
     Fm1ms = {}
     loop = [m for m in Ns if m >= n+1]  # m >= n+1, m<=N_bar
     for m in loop:
-        Fm1ms[m] = n/m/(m-1) * Gn1n(m, v, max_bid_dicts)
+        Fm1ms[m] = n/m/(m-1) * get_v_Gn1n_KDE(m,v,KDEs)
     return Fm1ms
 
-def computeFnbar(v, max_bid_dicts):
+def computeFnbar_KDE(v, max_bid_dicts, KDEs):
     Ns = calc_N_set(max_bid_dicts)
-    return 1 / max(Ns) * Gn1n(max(Ns), v, max_bid_dicts)    # Note: No n involved.
+    return 1 / max(Ns) * get_v_Gn1n_KDE(max(Ns), v, KDEs) 
 
-def computePhiFn1nbar(v, max_bid_dicts):
+def computePhiFn1nbar_KDE(v, max_bid_dicts, KDEs):
     Ns = calc_N_set(max_bid_dicts)
-    H = Gn1n(max(Ns), v, max_bid_dicts)
-    return 1/max(Ns) * ( calc_phi(max(Ns), H) ** max(Ns) )  # Note: No n involved.
+    H = get_v_Gn1n_KDE(max(Ns), v, KDEs) 
+    return 1/max(Ns) * ( calc_phi(max(Ns), H) ** max(Ns) )
 
-def Fnn_variedN(n, v, max_bid_dicts):
-    Fm1ms = computeFm1ms(n, v, max_bid_dicts)
+def Fnn_variedN_KDE(n, v, max_bid_dicts, KDEs):
+    Fm1ms = computeFm1ms_KDE(n, v, max_bid_dicts, KDEs)
     # Upper bound
     sum1 = sum([Fm1ms[m] for m in Fm1ms.keys() if m >= n+1])
-    F_U =  sum1 + n * computeFnbar(v, max_bid_dicts)
+    F_U = sum1 + n * computeFnbar_KDE(v, max_bid_dicts, KDEs)
     # Lower bound
-    F_L = sum1 + n * computePhiFn1nbar(v, max_bid_dicts)
-    return F_L,F_U
+    computePhiFn1nbar_KDE_val = computePhiFn1nbar_KDE(v, max_bid_dicts, KDEs)
+    F_L = sum1 + n * computePhiFn1nbar_KDE_val
+    return F_L,F_U, computePhiFn1nbar_KDE_val * max(calc_N_set(max_bid_dicts)), Fm1ms
 
+##### 5. Estimation of the Expected Profit. #####
+# Method: Using KDE to smooth the bounds
+def compute_expected_profit_KDE(n, r, max_bid_dicts, ub_v, v0, variedN=False, KDEs=None):
+    v_n1n, ghat_KDE_n1n, h = ghat_KDE(max_bid_dicts,n-1,n, ker='gaussian', bandwidth="ISJ")
+    v_nn, ghat_KDE_nn, h = ghat_KDE(max_bid_dicts,n,n, ker='gaussian', bandwidth="ISJ")
 
+    G_hat_vnn = KDE_pdf_to_cdf(v_nn, ghat_KDE_nn)
 
-##### 4. Estimation of the Expected Profit. #####
-def compute_expected_profit(n, r, max_bid_dicts, ub_v, v0, h, variedN=False):
-    si = stieltjes.stieltjes_integral(lambda v: max(r,v), lambda v: Fn1n(n,v,max_bid_dicts)[0], 0, ub_v, 10, h)
-    
     if variedN==False:
-        fnn_l, fnn_u = Fnn(n, r, max_bid_dicts)
-    else:
-        fnn_l, fnn_u = Fnn_variedN(n, r, max_bid_dicts)
+        fnn_l, fnn_u = Fnn_KDE(n,r, v_nn, G_hat_vnn)
+        L = len([d for d in max_bid_dicts if d['n'] == n])
+    else:   # variedN==True
+        ##### Original \bar{N} method in AL.(without intersecting bounds)
+        fnn_l, fnn_u, phi, Fm1ms = Fnn_variedN_KDE(n,r, max_bid_dicts, KDEs)
+        L = len([d for d in max_bid_dicts if d['n'] >= n])
         
-    print("fnn_l: ", fnn_l)
-    print("fnn_u: ", fnn_u)
-    lb = si - v0 - fnn_u * (r - v0)
-    ub = si - v0 - fnn_l * (r - v0)
-    return lb,ub
+    def f_ub(v):
+        return max(r,v) * ghat_KDE_nn[find_nearest(v_nn, v)]
+    def f_lb(v):
+        return max(r,v) * ghat_KDE_n1n[find_nearest(v_n1n, v)]
+    
+    # 100 is an arbitrarily large number for the integral.
+    ub = integrate.quad(f_ub,0,85)[0] - v0 - fnn_l * (r - v0)
+    lb = integrate.quad(f_lb,0,85)[0] - v0 - fnn_u * (r - v0)
+
+    # inference
+    if variedN==False:
+        ci_lb, ci_ub = ALinf.CI_out(ub, lb, L, max_bid_dicts, n, r, v0, fnn_l, alpha=0.05)
+    else: 
+        ci_lb, ci_ub = ALinf.CI_out_varyingN(ub, lb, L, max_bid_dicts, n, r, v0, phi,Fm1ms,h, alpha=0.05)
+    
+    return lb,ub,ci_lb,ci_ub

@@ -1,0 +1,82 @@
+
+OLS Regressions
+===================================================================
+                                            Dependent variable:    
+                                        ---------------------------
+                                                     n             
+                                                   reg1            
+-------------------------------------------------------------------
+high_estimate                                   -0.00000***        
+                                                  (0.000)          
+                                                                   
+cat0designer furniture                            2.024*           
+                                                  (1.111)          
+                                                                   
+cat0luxury goods                                   0.310           
+                                                  (1.071)          
+                                                                   
+cat0treasures                                     -1.128           
+                                                  (0.783)          
+                                                                   
+cat0VARIED                                         0.356           
+                                                  (1.134)          
+                                                                   
+cat0wines and spirits                              0.081           
+                                                  (1.241)          
+                                                                   
+cat1chinese art                                    0.426           
+                                                  (1.109)          
+                                                                   
+cat1impressionist/20th/21st century art           1.814*           
+                                                  (1.099)          
+                                                                   
+cat1jewelry                                       0.523**          
+                                                  (0.259)          
+                                                                   
+cat1old masters                                    0.463           
+                                                  (1.113)          
+                                                                   
+cat1VARIED                                         0.665           
+                                                  (0.969)          
+                                                                   
+cat1watches                                                        
+                                                                   
+                                                                   
+cat1whisky                                                         
+                                                                   
+                                                                   
+lochong kong                                      -0.438           
+                                                  (0.322)          
+                                                                   
+loclas vegas                                      -1.087           
+                                                  (0.759)          
+                                                                   
+loclondon                                         -0.121           
+                                                  (0.317)          
+                                                                   
+locmonaco                                         1.012*           
+                                                  (0.573)          
+                                                                   
+locnew york                                       -0.334           
+                                                  (0.309)          
+                                                                   
+locparis                                         -1.039***         
+                                                  (0.331)          
+                                                                   
+locshanghai                                                        
+                                                                   
+                                                                   
+final_price                                     0.00000***         
+                                                  (0.000)          
+                                                                   
+Constant                                          2.868**          
+                                                  (1.138)          
+                                                                   
+-------------------------------------------------------------------
+Observations                                       2,301           
+R2                                                 0.081           
+Adjusted R2                                        0.074           
+Residual Std. Error                          2.210 (df = 2282)     
+F Statistic                              11.178*** (df = 18; 2282) 
+===================================================================
+Note:                                   *p<0.1; **p<0.05; ***p<0.01

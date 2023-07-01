@@ -1,0 +1,144 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{babel}
+\begin{document}
+\title{A Theorem on $n$ - Updated Proof}
+\author{Bruce Wen, Kirill Ponomarev}
+\date{March 2, 2023}
+\maketitle
+
+\section{Theorem}
+
+From Haile Tamer (2003), define the strictly increasing differentiable
+function $\phi_{i:n}(H):[0,1]\to[0,1]$ as the implicit solution to
+\[
+H=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{\phi}s^{i-1}(1-s)^{n-i}ds
+\]
+Define $G_{n:n}(t)$ as the highest order statistic among a known
+$n$-bidder empirical distribution function with support $[\underline{v},\bar{v}]$.\\
+Define the function, $f_{n}(t):[0,1]\to[0,1]$, 
+\[
+f_{n}(t)=\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(t)\right)
+\]
+\\
+\textbf{Theorem}: Suppose $n\in\mathbb{N}$ and $n\geq2$. Then $f_{n}(t)$
+is decreasing in $n\in\mathbb{N}$, for all $0\leq t\leq1$.\\
+\\
+
+
+\section{Proof}
+
+First observe that $\phi_{n:n}^{-1}(x)=x^{n}$ and that the highest
+order statistic is simply raising to the $n^{th}$ power, so we can
+write,
+\[
+f_{n}(t)=\phi_{n-1:n}\left(t^{n}\right)^{n}
+\]
+For brevity of notation, from now on let $\phi\equiv\phi_{n-1:n}$.\\
+Consider the identity, $\left(\alpha(n)^{\beta(n)}\right)'=\alpha(n)^{\beta(n)}\beta'(n)\log\alpha(n)+\alpha(n)^{\beta(n)-1}\beta(n)\alpha'(n)$.
+Use this to take the derivative with respect to $n$, 
+\begin{align*}
+\left(f_{n}(t)\right)_{n}^{'} & =\phi\left(t^{n}\right)^{n}\log\phi\left(t^{n}\right)+\phi\left(t^{n}\right)^{n-1}n\left(\phi\left(t^{n}\right)\right)_{n}' & (*)
+\end{align*}
+\\
+First compute $\left(\phi\left(t^{n}\right)\right)_{n}'$ in $(*)$,
+which can be written, 
+\begin{align*}
+\left(\phi\left(t^{n},n\right)\right)_{n}^{'} & =\underset{\text{Term 1}}{\underbrace{\phi'_{t}\left(t^{n},n\right)}}\cdot t^{n}\log t+\underset{\text{Term 2}}{\underbrace{\phi'_{n}\left(t^{n},n\right)}}
+\end{align*}
+\textbf{Term 1} can be computed as follows. For some $H\in[0,1]$,
+observe that $\phi_{n-1:n}(H)$ is the implicit solution to the following:
+\begin{align*}
+H & =\frac{n!}{(n-n+1)!(n-1-1)!}\int_{0}^{\phi}s^{n-1-1}(1-s)^{n-n+1}ds\\
+ & =n(n-1)\left[\frac{1}{n-1}s^{n-1}-\frac{1}{n}s^{n}\right]_{0}^{\phi}\\
+ & =n\phi^{n-1}-(n-1)\phi^{n}
+\end{align*}
+And so, the inverse can be written as $\phi^{-1}(H)=nH^{n-1}-(n-1)H^{n}$.
+Differentiating this,
+\begin{align*}
+\left(\phi^{-1}\right)^{'}(H) & =n(n-1)H^{n-2}-n(n-1)H^{n-1}\\
+ & =n(n-1)H^{n-2}(1-H)
+\end{align*}
+And so by the inverse function theorem, we have
+\[
+\phi'_{t}\left(t,n\right)=\frac{1}{n(n-1)\phi(t,n)^{n-2}\left[1-\phi\left(t,n\right)\right]}
+\]
+We will now compute \textbf{Term 2}. \\
+Again use the identity $\left(\alpha(n)^{\beta(n)}\right)'=\alpha(n)^{\beta(n)}\beta'(n)\log\alpha(n)+\alpha(n)^{\beta(n)-1}\beta(n)\alpha'(n)$
+to differentiate $t=n\phi^{n-1}\left(t,n\right)-(n-1)\phi^{n}\left(t,n\right)$
+implicitly, we get (abbreviating the notation $\phi\equiv\phi(t^{n},n)$),
+\begin{align*}
+\phi'_{n}\left(t^{n},n\right) & =\frac{\phi^{n}-\phi^{n-1}-t^{n}\log\phi}{n(n-1)\phi^{n-2}(1-\phi)}
+\end{align*}
+This completes Term 2.\\
+Adding them, 
+\[
+\left(\phi\left(t^{n},n\right)\right)_{n}^{'}=\frac{t^{n}\log\frac{t}{\phi}+\phi^{n}-\phi^{n-1}}{n(n-1)\phi^{n-2}(1-\phi)}
+\]
+Now note that 
+\begin{align*}
+\left(\phi\left(t^{n},n\right)\right)_{n}^{'} & \geq0\;\;\forall n\geq1 & (**)
+\end{align*}
+To see this, first observe that the denominator is positive, so we
+only need to consider $t^{n}\log\frac{t}{\phi}$ versus $\phi^{n}-\phi^{n-1}$.
+Recall that $t^{n}=n\phi^{n-1}-(n-1)\phi^{n}$, so 
+\begin{align*}
+\phi^{n-1}-\phi^{n} & =\frac{t^{n}-\phi^{n}}{n} & (***)
+\end{align*}
+, so we are comparing $\log\frac{t}{\phi}$ versus $\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)$.
+But $\log(x)\geq\frac{1}{n}\left(1-\frac{1}{x^{n}}\right)$ for all
+$x\geq0$, $n\geq1$.\\
+\\
+Plugging $\left(\phi\left(t^{n},n\right)\right)_{n}^{'}$ back into
+$(*)$, we have, \\
+\begin{align*}
+\left(f_{n}(t)\right)_{n}' & =\phi{}^{n}\log\phi+\phi{}^{n-1}n\left(\phi\left(t^{n},n\right)\right)_{n}'\\
+ & =\phi{}^{n}\log\phi+\phi{}^{n-1}\frac{t^{n}\log\frac{t}{\phi}+\phi^{n}-\phi^{n-1}}{(n-1)\phi^{n-2}(1-\phi)}\\
+ & =\frac{\phi}{(n-1)(1-\phi)}\left[\left(\phi^{n-1}-\phi^{n}\right)\left((n-1)\log\phi-1\right)+t^{n}\log\left(\frac{t}{\phi}\right)\right]\\
+ & =\frac{t^{n}\phi}{(n-1)(1-\phi)}\underset{(****)}{\underbrace{\left[\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)\left((n-1)\log\phi-1\right)+\log\left(\frac{t}{\phi}\right)\right]}}
+\end{align*}
+We need to show that $(****)\leq0$ for all $n\geq2$. Observe that,
+\[
+(****)\leq0\iff\log\phi\leq\frac{1}{n-1}\cdot\frac{\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)-\log\frac{t}{\phi}}{\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)}
+\]
+Let $z\equiv\frac{t}{\phi}$. Then, 
+\[
+(****)\leq0\iff\log t\leq\underset{g(z,n)}{\underbrace{\log z+\frac{1}{n-1}\cdot\frac{\frac{1}{n}\left(1-\frac{1}{z^{n}}\right)-\log z}{\frac{1}{n}\left(1-\frac{1}{z^{n}}\right)}}}
+\]
+Now, see that $\log t$ does not depend on $n$, while in the RHS,
+the following holds:
+\begin{enumerate}
+\item $g(z,n)$ is increasing in $n$ for a fixed $z$.
+\item $g(z,n)$ is decreasing in $z$ for a fixed $n$.
+\end{enumerate}
+But recall that $z=z_{n}=\frac{t}{\phi_{n-1:n}\left(t^{n}\right)}$,
+which is decreasing in $n$ for a fixed $t$ from $(**)$. So $g(z_{n},n)$
+is increasing in $n$, and thus it suffices to check $(****)$ for
+$n=2$. \\
+\\
+For the case of $n=2$, consider the following properties:
+\begin{enumerate}
+\item $\frac{z^{2}}{z^{2}-1}=\frac{1}{2}\left(\frac{1}{1-\phi}+1\right)$
+by substituting $z=\frac{t}{\phi}$ and using $(***)$ for $n=2$,
+$2\phi-\phi^{2}=t^{2}$.
+\item $\log z=\frac{1}{2}\left(\log(2-\phi)-\log\phi\right)$ by again using
+$2\phi-\phi^{2}=t^{2}$ and taking the natural log.
+\end{enumerate}
+Then, 
+
+\begin{align*}
+\log t-g(z_{2},2) & =\log t-\log z-1+\frac{z^{2}}{z^{2}-1}\cdot2\log z\\
+ & =\log\phi-1+\frac{1}{2}\left(\frac{1}{1-\phi}+1\right)\left(\log(2-\phi)-\log\phi\right)\\
+ & =\log\phi-1+\frac{\log(2-\phi)-\log\phi}{2(1-\phi)}+\frac{\log(2-\phi)-\log\phi}{2}\\
+ & =\frac{\log(2-\phi)-\log\phi}{2(1-\phi)}+\frac{\log(2-\phi)+\log\phi}{2}-1\\
+ & =\log(\phi)+\frac{(\phi-2)\tanh^{-1}(1-\phi)}{\phi-1}-1\\
+ & \leq0\;\;\;\;\;\;\forall\phi\in(0,1)
+\end{align*}
+So $(****)$ is true for $n=2$, which proves that $(****)\leq0$.
+\\
+$\blacksquare$
+\end{document}

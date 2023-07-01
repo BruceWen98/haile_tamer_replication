@@ -1,0 +1,13 @@
+
+*.png
+__pycache__
+park/
+*.p
+*.pkl
+*.gz
+*.aux
+*.lyx~
+*.heic
+*.jpg
+.DS_Store
+*.zip

@@ -29,9 +29,10 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -44,6 +45,7 @@
 \use_package undertilde 1
 \cite_engine basic
 \cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -55,6 +57,12 @@
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\headheight 2cm
+\headsep 2cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -76,7 +84,7 @@
 \begin_body
 
 \begin_layout Title
-Theoretical Extensions for HT and AL Estimation
+Theoretical Discussion for HT and AL Estimation
 \end_layout
 
 \begin_layout Author
@@ -84,7 +92,7 @@ Bruce Wen
 \end_layout
 
 \begin_layout Date
-November 3, 2022
+November 20, 2022
 \end_layout
 
 \begin_layout Section
@@ -92,7 +100,574 @@ Haile-Tamer Extensions
 \end_layout
 
 \begin_layout Standard
-From Haile Tamer: 
+Let 
+\begin_inset Formula $H$
+\end_inset
+
+ be the result of an empirical distribution function, e.g.
+ 
+\begin_inset Formula $\hat{G}_{i:n}(v)$
+\end_inset
+
+ as defined in Haile-Tamer (2003).
+ The 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ order statistic is well-known to follow the cumulative distribution, 
+\begin_inset Formula 
+\[
+F_{i:n}(v)=\sum_{j=i}^{n}\frac{n!}{j!(n-j)!}F(v)^{j}\left[1-F(v)\right]^{n-j}
+\]
+
+\end_inset
+
+From Haile Tamer (2003), define the strictly increasing differentiable function
+ 
+\begin_inset Formula $\phi_{i:n}(H):[0,1]\to[0,1]$
+\end_inset
+
+ as the implicit solution to
+\begin_inset Formula 
+\[
+H=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{\phi}s^{i-1}(1-s)^{n-i}ds
+\]
+
+\end_inset
+
+We will now prove this is correct.
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Proof
+\bar default
+:
+\begin_inset Newline newline
+\end_inset
+
+We want to show that, 
+\begin_inset Formula $\sum_{j=i}^{n}\frac{n!}{j!(n-j)!}F(v)^{j}\left[1-F(v)\right]^{n-j}=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{F(v)}s^{i-1}(1-s)^{n-i}ds$
+\end_inset
+
+.
+ Do repeated integration by parts on the RHS, 
+\begin_inset Formula 
+\begin{align*}
+\int_{0}^{F(v)}s^{i-1}(1-s)^{n-i}ds & =\int_{0}^{F(v)}(1-s)^{n-i}s^{i-1}ds\\
+ & =\left[(1-s)^{n-i}\frac{s^{i}}{i}\right]_{s=0}^{F(v)}+\int_{0}^{F(v)}(n-i)(1-s)^{n-i-1}\frac{s^{i}}{i}ds\\
+ & =\left[(1-s)^{n-i}\frac{s^{i}}{i}+(n-i)(1-s)^{n-i-1}\frac{s^{i+1}}{i(i+1)}\right]_{s=0}^{F(v)}+\int_{0}^{F(v)}(n-i)(n-i-1)(1-s)^{n-i-2}\frac{s^{i+1}}{i(i+1)}ds\\
+ & =...\\
+ & =\sum_{j=i}^{n}\left[\frac{(n-i)!}{(n-j)!}(1-s)^{n-j}\frac{s^{j}}{j!/(i-1)!}\right]_{s=0}^{F(v)}\\
+ & =\sum_{j=i}^{n}\frac{(n-i)!}{(n-j)!}(1-F(v))^{n-j}\frac{F(v)^{j}}{j!/(i-1)!}
+\end{align*}
+
+\end_inset
+
+Finally, 
+\begin_inset Formula $\frac{n!}{(n-i)!(i-1)!}*\sum_{j=i}^{n}\frac{(n-i)!}{(n-j)!}(1-F(v))^{n-j}\frac{F(v)^{j}}{j!/(i-1)!}=\sum_{j=i}^{n}\frac{n!}{j!(n-j)!}F(v)^{j}\left[1-F(v)\right]^{n-j}$
+\end_inset
+
+ which completes the proof.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Estimating the highest and 2nd-highest order statistics
+\end_layout
+
+\begin_layout Standard
+First define the inverse function of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ as, 
+\begin_inset Formula $\phi_{i:n}^{-1}(F(v)):[0,1]\to[0,1]$
+\end_inset
+
+,
+\begin_inset Formula 
+\[
+\phi_{i:n}^{-1}(F(v))=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{F(v)}s^{i-1}(1-s)^{n-i}ds
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Then the bounds for the second highest order statistic, using only the top
+ 2 bids, are, 
+\begin_inset Formula 
+\[
+G_{n:n}(b)\leq F_{n-1:n}(b)\leq\phi_{n-1:n}^{-1}\left(\underset{j\in\{n-1,n\}}{\text{min}}\phi_{j:n}(G_{n-1:n})\right)
+\]
+
+\end_inset
+
+And the bounds for the highest order statistic, using only the top 2 bids,
+ are, 
+\begin_inset Formula 
+\[
+\phi_{n-1:n}\left(G_{n:n}(b)\right)^{N}\leq F_{n:n}(b)\leq\phi_{n:n}^{-1}\left(\underset{j\in\{n-1,n\}}{\text{min}}\phi_{j:n}(G_{n-1:n})\right)
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Section
+Aradillas-Lopez Derivations
+\end_layout
+
+\begin_layout Standard
+The profit payoff function in Aradillas-Lopez can be re-written in expectation
+ form, 
+\begin_inset Formula 
+\begin{align*}
+\pi_{n}(r) & =\underset{\text{Expected Revenue}}{\underbrace{\int_{0}^{\infty}max\{r,v\}dF_{n-1:n}(v)}}-\underset{\text{Value to Auctioneer}}{\underbrace{v_{0}}}-\underset{\text{If highest valuation}<r,\text{ reduce profit to 0.}}{\underbrace{F_{n:n}(r)(r-v_{0})}}\\
+ & =\int_{0}^{\infty}max\{r,v\}f_{n-1:n}(v)d(v)-v_{0}-F_{n:n}(r)(r-v_{0})\\
+ & =\mathbb{E}_{V}\left[max\{r,v\}\right]-v_{0}-F_{n:n}(r)(r-v_{0}) & (i)
+\end{align*}
+
+\end_inset
+
+(i) Here we assume the discrete version of expectation, and thus do not
+ require differentiability of the 
+\begin_inset Formula $max()$
+\end_inset
+
+ function.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+where 
+\begin_inset Formula $V\sim F_{n-1:n}$
+\end_inset
+
+.
+ Now, we can use the law of large numbers and sample from the distribution
+ at different values of 
+\begin_inset Formula $v$
+\end_inset
+
+, i.e.
+ calculate, 
+\begin_inset Formula 
+\[
+\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{i}\}
+\]
+
+\end_inset
+
+which converges to 
+\begin_inset Formula $\mathbb{E}_{V}\left[max\{r,v\}\right]$
+\end_inset
+
+ as 
+\begin_inset Formula $N\to\infty$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+To sample 
+\begin_inset Formula $v_{i}$
+\end_inset
+
+, we do the following.
+ First create the random variable, 
+\begin_inset Formula $U\sim Uniform[0,1]$
+\end_inset
+
+, which is the range of the cumulative distributive function.
+ Then, 
+\begin_inset Formula $V\sim F_{n-1:n}^{-1}\left(U\right)$
+\end_inset
+
+.
+ Note that 
+\begin_inset Formula $F_{n-1:n}(v)$
+\end_inset
+
+ is weakly increasing in 
+\begin_inset Formula $v$
+\end_inset
+
+ (see ii), so it is fine to take the inverse.
+ So we draw the required 
+\begin_inset Formula $v_{i}$
+\end_inset
+
+ from 
+\begin_inset Formula $V$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Claim (ii)
+\bar default
+: 
+\begin_inset Formula $F_{n-1:n}(v)$
+\end_inset
+
+ is weakly increasing in 
+\begin_inset Formula $v$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Proof (ii)
+\bar default
+: Let 
+\begin_inset Formula $v_{1},v_{2}\in[0,\bar{V}]$
+\end_inset
+
+ such that 
+\begin_inset Formula $v_{1}<v_{2}$
+\end_inset
+
+.
+ Since 
+\begin_inset Formula $G_{n:n}(v)\leq F_{n-1:n}(v)\leq G_{n-1:n}(v)$
+\end_inset
+
+ by construction, it suffices to show that 
+\begin_inset Formula $G_{n-1:n}(v_{1})\leq G_{n:n}(v_{2})$
+\end_inset
+
+.
+ Since 
+\begin_inset Formula $G_{i:n}(v)=\frac{1}{T_{n}}\sum_{t=1}^{T}\mathds{1}\{n_{t}=n,b_{i:n_{t}}\leq v\}$
+\end_inset
+
+, and 
+\begin_inset Formula $b_{n-1:n}<b_{n:n}$
+\end_inset
+
+ in the data for number of bidders 
+\begin_inset Formula $n\geq2$
+\end_inset
+
+, it must be that 
+\begin_inset Formula $G_{n-1:n}(v_{1})\leq G_{n:n}(v_{2})$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+The sharp bounds for 
+\begin_inset Formula $F_{n-1:n}(b)$
+\end_inset
+
+ are, 
+\begin_inset Formula 
+\[
+G_{n:n}(b)\leq F_{n-1:n}(b)\leq G_{n-1:n}(b)
+\]
+
+\end_inset
+
+And the sharp bounds for 
+\begin_inset Formula $F_{n:n}(b)$
+\end_inset
+
+ are, 
+\begin_inset Formula 
+\[
+\phi_{n-1:n}\left(G_{n:n}(b)\right)^{n}\leq F_{n:n}(b)\leq G_{n:n}(b)
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+So the profit function is bounded by, 
+\begin_inset Formula 
+\[
+\int_{0}^{\infty}max\{r,v\}dG_{n-1:n}(v)-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})\leq\pi_{n}(r)\leq\int_{0}^{\infty}max\{r,v\}dG_{n:n}(v)-v_{0}-G_{n:n}(r)(r-v_{0})
+\]
+
+\end_inset
+
+which can be simplified to be just estimating, for all 
+\begin_inset Formula $0\leq r\leq\bar{V}$
+\end_inset
+
+ (pointwise), 
+\begin_inset Formula 
+\[
+\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{lb,i}\}-v_{0}-G_{n:n}(r)(r-v_{0})\leq\pi_{n}(r)\leq\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{ub,i}\}-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})
+\]
+
+\end_inset
+
+where
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\begin_inset Formula $v_{lb,i}$
+\end_inset
+
+ is drawn from
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ 
+\begin_inset Formula $V_{lb}\sim G_{n-1:n}^{-1}(U)$
+\end_inset
+
+ and 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $v_{ub,i}$
+\end_inset
+
+ is drawn from 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula $V_{ub}\sim G_{n:n}^{-1}(U)$
+\end_inset
+
+.
+ We can set 
+\begin_inset Formula $N$
+\end_inset
+
+ to be large, say 100000.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Meanwhile, the Haile-Tamer profit bounds are, 
+\begin_inset Formula 
+\[
+\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{lb,i}\}-v_{0}-\phi_{n:n}^{-1}\left(\underset{j\in\{n-1,n\}}{\text{min}}\phi_{j:n}(G_{n-1:n})\right)(r-v_{0})\leq\pi_{n}^{HT}(r)\leq\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{ub,i}\}-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})
+\]
+
+\end_inset
+
+where
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\begin_inset Formula $v_{lb,i}$
+\end_inset
+
+ is drawn from
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ 
+\begin_inset Formula $H^{-1}(U)$
+\end_inset
+
+ where 
+\begin_inset Formula $H(U)=\phi_{n-1:n}\left(G_{n:n}(U)\right)^{n}$
+\end_inset
+
+ and 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $v_{ub,i}$
+\end_inset
+
+ is drawn from 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula $V_{ub}\sim G_{n:n}^{-1}(U)$
+\end_inset
+
+.
+ So only the lower bounds differ between the Haile-Tamer and Aradillas-Lopez
+ methods.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \end_body

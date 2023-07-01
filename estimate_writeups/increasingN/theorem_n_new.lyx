@@ -1,0 +1,611 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+A Theorem on 
+\begin_inset Formula $n$
+\end_inset
+
+ - Updated Proof
+\end_layout
+
+\begin_layout Author
+Bruce Wen, Kirill Ponomarev
+\end_layout
+
+\begin_layout Date
+March 2, 2023
+\end_layout
+
+\begin_layout Section
+Theorem
+\end_layout
+
+\begin_layout Standard
+From Haile Tamer (2003), define the strictly increasing differentiable function
+ 
+\begin_inset Formula $\phi_{i:n}(H):[0,1]\to[0,1]$
+\end_inset
+
+ as the implicit solution to
+\begin_inset Formula 
+\[
+H=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{\phi}s^{i-1}(1-s)^{n-i}ds
+\]
+
+\end_inset
+
+Define 
+\begin_inset Formula $G_{n:n}(t)$
+\end_inset
+
+ as the highest order statistic among a known 
+\begin_inset Formula $n$
+\end_inset
+
+-bidder empirical distribution function with support 
+\begin_inset Formula $[\underline{v},\bar{v}]$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+Define the function, 
+\begin_inset Formula $f_{n}(t):[0,1]\to[0,1]$
+\end_inset
+
+, 
+\begin_inset Formula 
+\[
+f_{n}(t)=\phi_{n:n}^{-1}\phi_{n-1:n}\left(G_{n:n}(t)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\series bold
+Theorem
+\series default
+: Suppose 
+\begin_inset Formula $n\in\mathbb{N}$
+\end_inset
+
+ and 
+\begin_inset Formula $n\geq2$
+\end_inset
+
+.
+ Then 
+\begin_inset Formula $f_{n}(t)$
+\end_inset
+
+ is decreasing in 
+\begin_inset Formula $n\in\mathbb{N}$
+\end_inset
+
+, for all 
+\begin_inset Formula $0\leq t\leq1$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Proof
+\end_layout
+
+\begin_layout Standard
+First observe that 
+\begin_inset Formula $\phi_{n:n}^{-1}(x)=x^{n}$
+\end_inset
+
+ and that the highest order statistic is simply raising to the 
+\begin_inset Formula $n^{th}$
+\end_inset
+
+ power, so we can write,
+\begin_inset Formula 
+\[
+f_{n}(t)=\phi_{n-1:n}\left(t^{n}\right)^{n}
+\]
+
+\end_inset
+
+For brevity of notation, from now on let 
+\begin_inset Formula $\phi\equiv\phi_{n-1:n}$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+Consider the identity, 
+\begin_inset Formula $\left(\alpha(n)^{\beta(n)}\right)'=\alpha(n)^{\beta(n)}\beta'(n)\log\alpha(n)+\alpha(n)^{\beta(n)-1}\beta(n)\alpha'(n)$
+\end_inset
+
+.
+ Use this to take the derivative with respect to 
+\begin_inset Formula $n$
+\end_inset
+
+, 
+\begin_inset Formula 
+\begin{align*}
+\left(f_{n}(t)\right)_{n}^{'} & =\phi\left(t^{n}\right)^{n}\log\phi\left(t^{n}\right)+\phi\left(t^{n}\right)^{n-1}n\left(\phi\left(t^{n}\right)\right)_{n}' & (*)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+First compute 
+\begin_inset Formula $\left(\phi\left(t^{n}\right)\right)_{n}'$
+\end_inset
+
+ in 
+\begin_inset Formula $(*)$
+\end_inset
+
+, which can be written, 
+\begin_inset Formula 
+\begin{align*}
+\left(\phi\left(t^{n},n\right)\right)_{n}^{'} & =\underset{\text{Term 1}}{\underbrace{\phi'_{t}\left(t^{n},n\right)}}\cdot t^{n}\log t+\underset{\text{Term 2}}{\underbrace{\phi'_{n}\left(t^{n},n\right)}}
+\end{align*}
+
+\end_inset
+
+
+\series bold
+Term 1
+\series default
+ can be computed as follows.
+ For some 
+\begin_inset Formula $H\in[0,1]$
+\end_inset
+
+, observe that 
+\begin_inset Formula $\phi_{n-1:n}(H)$
+\end_inset
+
+ is the implicit solution to the following:
+\begin_inset Formula 
+\begin{align*}
+H & =\frac{n!}{(n-n+1)!(n-1-1)!}\int_{0}^{\phi}s^{n-1-1}(1-s)^{n-n+1}ds\\
+ & =n(n-1)\left[\frac{1}{n-1}s^{n-1}-\frac{1}{n}s^{n}\right]_{0}^{\phi}\\
+ & =n\phi^{n-1}-(n-1)\phi^{n}
+\end{align*}
+
+\end_inset
+
+And so, the inverse can be written as 
+\begin_inset Formula $\phi^{-1}(H)=nH^{n-1}-(n-1)H^{n}$
+\end_inset
+
+.
+ Differentiating this,
+\begin_inset Formula 
+\begin{align*}
+\left(\phi^{-1}\right)^{'}(H) & =n(n-1)H^{n-2}-n(n-1)H^{n-1}\\
+ & =n(n-1)H^{n-2}(1-H)
+\end{align*}
+
+\end_inset
+
+And so by the inverse function theorem, we have
+\begin_inset Formula 
+\[
+\phi'_{t}\left(t,n\right)=\frac{1}{n(n-1)\phi(t,n)^{n-2}\left[1-\phi\left(t,n\right)\right]}
+\]
+
+\end_inset
+
+We will now compute 
+\series bold
+Term 2
+\series default
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Again use the identity 
+\begin_inset Formula $\left(\alpha(n)^{\beta(n)}\right)'=\alpha(n)^{\beta(n)}\beta'(n)\log\alpha(n)+\alpha(n)^{\beta(n)-1}\beta(n)\alpha'(n)$
+\end_inset
+
+ to differentiate 
+\begin_inset Formula $t=n\phi^{n-1}\left(t,n\right)-(n-1)\phi^{n}\left(t,n\right)$
+\end_inset
+
+ implicitly, we get (abbreviating the notation 
+\begin_inset Formula $\phi\equiv\phi(t^{n},n)$
+\end_inset
+
+),
+\begin_inset Formula 
+\begin{align*}
+\phi'_{n}\left(t^{n},n\right) & =\frac{\phi^{n}-\phi^{n-1}-t^{n}\log\phi}{n(n-1)\phi^{n-2}(1-\phi)}
+\end{align*}
+
+\end_inset
+
+This completes Term 2.
+\begin_inset Newline newline
+\end_inset
+
+Adding them, 
+\begin_inset Formula 
+\[
+\left(\phi\left(t^{n},n\right)\right)_{n}^{'}=\frac{t^{n}\log\frac{t}{\phi}+\phi^{n}-\phi^{n-1}}{n(n-1)\phi^{n-2}(1-\phi)}
+\]
+
+\end_inset
+
+Now note that 
+\begin_inset Formula 
+\begin{align*}
+\left(\phi\left(t^{n},n\right)\right)_{n}^{'} & \geq0\;\;\forall n\geq1 & (**)
+\end{align*}
+
+\end_inset
+
+To see this, first observe that the denominator is positive, so we only
+ need to consider 
+\begin_inset Formula $t^{n}\log\frac{t}{\phi}$
+\end_inset
+
+ versus 
+\begin_inset Formula $\phi^{n}-\phi^{n-1}$
+\end_inset
+
+.
+ Recall that 
+\begin_inset Formula $t^{n}=n\phi^{n-1}-(n-1)\phi^{n}$
+\end_inset
+
+, so 
+\begin_inset Formula 
+\begin{align*}
+\phi^{n-1}-\phi^{n} & =\frac{t^{n}-\phi^{n}}{n} & (***)
+\end{align*}
+
+\end_inset
+
+, so we are comparing 
+\begin_inset Formula $\log\frac{t}{\phi}$
+\end_inset
+
+ versus 
+\begin_inset Formula $\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)$
+\end_inset
+
+.
+ But 
+\begin_inset Formula $\log(x)\geq\frac{1}{n}\left(1-\frac{1}{x^{n}}\right)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\geq0$
+\end_inset
+
+, 
+\begin_inset Formula $n\geq1$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Plugging 
+\begin_inset Formula $\left(\phi\left(t^{n},n\right)\right)_{n}^{'}$
+\end_inset
+
+ back into 
+\begin_inset Formula $(*)$
+\end_inset
+
+, we have, 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\left(f_{n}(t)\right)_{n}' & =\phi{}^{n}\log\phi+\phi{}^{n-1}n\left(\phi\left(t^{n},n\right)\right)_{n}'\\
+ & =\phi{}^{n}\log\phi+\phi{}^{n-1}\frac{t^{n}\log\frac{t}{\phi}+\phi^{n}-\phi^{n-1}}{(n-1)\phi^{n-2}(1-\phi)}\\
+ & =\frac{\phi}{(n-1)(1-\phi)}\left[\left(\phi^{n-1}-\phi^{n}\right)\left((n-1)\log\phi-1\right)+t^{n}\log\left(\frac{t}{\phi}\right)\right]\\
+ & =\frac{t^{n}\phi}{(n-1)(1-\phi)}\underset{(****)}{\underbrace{\left[\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)\left((n-1)\log\phi-1\right)+\log\left(\frac{t}{\phi}\right)\right]}}
+\end{align*}
+
+\end_inset
+
+We need to show that 
+\begin_inset Formula $(****)\leq0$
+\end_inset
+
+ for all 
+\begin_inset Formula $n\geq2$
+\end_inset
+
+.
+ Observe that,
+\begin_inset Formula 
+\[
+(****)\leq0\iff\log\phi\leq\frac{1}{n-1}\cdot\frac{\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)-\log\frac{t}{\phi}}{\frac{1}{n}\left(1-\frac{1}{\left(\frac{t}{\phi}\right)^{n}}\right)}
+\]
+
+\end_inset
+
+Let 
+\begin_inset Formula $z\equiv\frac{t}{\phi}$
+\end_inset
+
+.
+ Then, 
+\begin_inset Formula 
+\[
+(****)\leq0\iff\log t\leq\underset{g(z,n)}{\underbrace{\log z+\frac{1}{n-1}\cdot\frac{\frac{1}{n}\left(1-\frac{1}{z^{n}}\right)-\log z}{\frac{1}{n}\left(1-\frac{1}{z^{n}}\right)}}}
+\]
+
+\end_inset
+
+Now, see that 
+\begin_inset Formula $\log t$
+\end_inset
+
+ does not depend on 
+\begin_inset Formula $n$
+\end_inset
+
+, while in the RHS, the following holds:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $g(z,n)$
+\end_inset
+
+ is increasing in 
+\begin_inset Formula $n$
+\end_inset
+
+ for a fixed 
+\begin_inset Formula $z$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $g(z,n)$
+\end_inset
+
+ is decreasing in 
+\begin_inset Formula $z$
+\end_inset
+
+ for a fixed 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+But recall that 
+\begin_inset Formula $z=z_{n}=\frac{t}{\phi_{n-1:n}\left(t^{n}\right)}$
+\end_inset
+
+, which is decreasing in 
+\begin_inset Formula $n$
+\end_inset
+
+ for a fixed 
+\begin_inset Formula $t$
+\end_inset
+
+ from 
+\begin_inset Formula $(**)$
+\end_inset
+
+.
+ So 
+\begin_inset Formula $g(z_{n},n)$
+\end_inset
+
+ is increasing in 
+\begin_inset Formula $n$
+\end_inset
+
+, and thus it suffices to check 
+\begin_inset Formula $(****)$
+\end_inset
+
+ for 
+\begin_inset Formula $n=2$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+For the case of 
+\begin_inset Formula $n=2$
+\end_inset
+
+, consider the following properties:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\frac{z^{2}}{z^{2}-1}=\frac{1}{2}\left(\frac{1}{1-\phi}+1\right)$
+\end_inset
+
+ by substituting 
+\begin_inset Formula $z=\frac{t}{\phi}$
+\end_inset
+
+ and using 
+\begin_inset Formula $(***)$
+\end_inset
+
+ for 
+\begin_inset Formula $n=2$
+\end_inset
+
+, 
+\begin_inset Formula $2\phi-\phi^{2}=t^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\log z=\frac{1}{2}\left(\log(2-\phi)-\log\phi\right)$
+\end_inset
+
+ by again using 
+\begin_inset Formula $2\phi-\phi^{2}=t^{2}$
+\end_inset
+
+ and taking the natural log.
+\end_layout
+
+\begin_layout Standard
+Then, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\log t-g(z_{2},2) & =\log t-\log z-1+\frac{z^{2}}{z^{2}-1}\cdot2\log z\\
+ & =\log\phi-1+\frac{1}{2}\left(\frac{1}{1-\phi}+1\right)\left(\log(2-\phi)-\log\phi\right)\\
+ & =\log\phi-1+\frac{\log(2-\phi)-\log\phi}{2(1-\phi)}+\frac{\log(2-\phi)-\log\phi}{2}\\
+ & =\frac{\log(2-\phi)-\log\phi}{2(1-\phi)}+\frac{\log(2-\phi)+\log\phi}{2}-1\\
+ & =\log(\phi)+\frac{(\phi-2)\tanh^{-1}(1-\phi)}{\phi-1}-1\\
+ & \leq0\;\;\;\;\;\;\forall\phi\in(0,1)
+\end{align*}
+
+\end_inset
+
+So 
+\begin_inset Formula $(****)$
+\end_inset
+
+ is true for 
+\begin_inset Formula $n=2$
+\end_inset
+
+, which proves that 
+\begin_inset Formula $(****)\leq0$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\blacksquare$
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

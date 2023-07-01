@@ -1,0 +1,147 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=2cm}
+\usepackage{dsfont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+\usepackage{babel}
+\begin{document}
+\title{Theoretical Discussion for HT and AL Estimation}
+\author{Bruce Wen}
+\date{November 20, 2022}
+\maketitle
+
+\section{Haile-Tamer Extensions}
+
+Let $H$ be the result of an empirical distribution function, e.g.
+$\hat{G}_{i:n}(v)$ as defined in Haile-Tamer (2003). The $i^{th}$
+order statistic is well-known to follow the cumulative distribution,
+\[
+F_{i:n}(v)=\sum_{j=i}^{n}\frac{n!}{j!(n-j)!}F(v)^{j}\left[1-F(v)\right]^{n-j}
+\]
+From Haile Tamer (2003), define the strictly increasing differentiable
+function $\phi_{i:n}(H):[0,1]\to[0,1]$ as the implicit solution to
+\[
+H=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{\phi}s^{i-1}(1-s)^{n-i}ds
+\]
+We will now prove this is correct.\\
+\uline{Proof}:\\
+We want to show that, $\sum_{j=i}^{n}\frac{n!}{j!(n-j)!}F(v)^{j}\left[1-F(v)\right]^{n-j}=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{F(v)}s^{i-1}(1-s)^{n-i}ds$.
+Do repeated integration by parts on the RHS, 
+\begin{align*}
+\int_{0}^{F(v)}s^{i-1}(1-s)^{n-i}ds & =\int_{0}^{F(v)}(1-s)^{n-i}s^{i-1}ds\\
+ & =\left[(1-s)^{n-i}\frac{s^{i}}{i}\right]_{s=0}^{F(v)}+\int_{0}^{F(v)}(n-i)(1-s)^{n-i-1}\frac{s^{i}}{i}ds\\
+ & =\left[(1-s)^{n-i}\frac{s^{i}}{i}+(n-i)(1-s)^{n-i-1}\frac{s^{i+1}}{i(i+1)}\right]_{s=0}^{F(v)}+\int_{0}^{F(v)}(n-i)(n-i-1)(1-s)^{n-i-2}\frac{s^{i+1}}{i(i+1)}ds\\
+ & =...\\
+ & =\sum_{j=i}^{n}\left[\frac{(n-i)!}{(n-j)!}(1-s)^{n-j}\frac{s^{j}}{j!/(i-1)!}\right]_{s=0}^{F(v)}\\
+ & =\sum_{j=i}^{n}\frac{(n-i)!}{(n-j)!}(1-F(v))^{n-j}\frac{F(v)^{j}}{j!/(i-1)!}
+\end{align*}
+Finally, $\frac{n!}{(n-i)!(i-1)!}*\sum_{j=i}^{n}\frac{(n-i)!}{(n-j)!}(1-F(v))^{n-j}\frac{F(v)^{j}}{j!/(i-1)!}=\sum_{j=i}^{n}\frac{n!}{j!(n-j)!}F(v)^{j}\left[1-F(v)\right]^{n-j}$
+which completes the proof.\\
+\\
+\\
+\\
+\\
+\\
+
+
+\subsection{Estimating the highest and 2nd-highest order statistics}
+
+First define the inverse function of $\phi$ as, $\phi_{i:n}^{-1}(F(v)):[0,1]\to[0,1]$,
+\[
+\phi_{i:n}^{-1}(F(v))=\frac{n!}{(n-i)!(i-1)!}\int_{0}^{F(v)}s^{i-1}(1-s)^{n-i}ds
+\]
+\\
+Then the bounds for the second highest order statistic, using only
+the top 2 bids, are, 
+\[
+G_{n:n}(b)\leq F_{n-1:n}(b)\leq\phi_{n-1:n}^{-1}\left(\underset{j\in\{n-1,n\}}{\text{min}}\phi_{j:n}(G_{n-1:n})\right)
+\]
+And the bounds for the highest order statistic, using only the top
+2 bids, are, 
+\[
+\phi_{n-1:n}\left(G_{n:n}(b)\right)^{N}\leq F_{n:n}(b)\leq\phi_{n:n}^{-1}\left(\underset{j\in\{n-1,n\}}{\text{min}}\phi_{j:n}(G_{n-1:n})\right)
+\]
+\\
+\\
+\\
+
+
+\section{Aradillas-Lopez Derivations}
+
+The profit payoff function in Aradillas-Lopez can be re-written in
+expectation form, 
+\begin{align*}
+\pi_{n}(r) & =\underset{\text{Expected Revenue}}{\underbrace{\int_{0}^{\infty}max\{r,v\}dF_{n-1:n}(v)}}-\underset{\text{Value to Auctioneer}}{\underbrace{v_{0}}}-\underset{\text{If highest valuation}<r,\text{ reduce profit to 0.}}{\underbrace{F_{n:n}(r)(r-v_{0})}}\\
+ & =\int_{0}^{\infty}max\{r,v\}f_{n-1:n}(v)d(v)-v_{0}-F_{n:n}(r)(r-v_{0})\\
+ & =\mathbb{E}_{V}\left[max\{r,v\}\right]-v_{0}-F_{n:n}(r)(r-v_{0}) & (i)
+\end{align*}
+(i) Here we assume the discrete version of expectation, and thus do
+not require differentiability of the $max()$ function.\\
+\\
+where $V\sim F_{n-1:n}$. Now, we can use the law of large numbers
+and sample from the distribution at different values of $v$, i.e.
+calculate, 
+\[
+\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{i}\}
+\]
+which converges to $\mathbb{E}_{V}\left[max\{r,v\}\right]$ as $N\to\infty$.\\
+To sample $v_{i}$, we do the following. First create the random variable,
+$U\sim Uniform[0,1]$, which is the range of the cumulative distributive
+function. Then, $V\sim F_{n-1:n}^{-1}\left(U\right)$. Note that $F_{n-1:n}(v)$
+is weakly increasing in $v$ (see ii), so it is fine to take the inverse.
+So we draw the required $v_{i}$ from $V$.\\
+\\
+\uline{Claim (ii)}: $F_{n-1:n}(v)$ is weakly increasing in $v$.\\
+\uline{Proof (ii)}: Let $v_{1},v_{2}\in[0,\bar{V}]$ such that
+$v_{1}<v_{2}$. Since $G_{n:n}(v)\leq F_{n-1:n}(v)\leq G_{n-1:n}(v)$
+by construction, it suffices to show that $G_{n-1:n}(v_{1})\leq G_{n:n}(v_{2})$.
+Since $G_{i:n}(v)=\frac{1}{T_{n}}\sum_{t=1}^{T}\mathds{1}\{n_{t}=n,b_{i:n_{t}}\leq v\}$,
+and $b_{n-1:n}<b_{n:n}$ in the data for number of bidders $n\geq2$,
+it must be that $G_{n-1:n}(v_{1})\leq G_{n:n}(v_{2})$.\\
+\\
+\\
+The sharp bounds for $F_{n-1:n}(b)$ are, 
+\[
+G_{n:n}(b)\leq F_{n-1:n}(b)\leq G_{n-1:n}(b)
+\]
+And the sharp bounds for $F_{n:n}(b)$ are, 
+\[
+\phi_{n-1:n}\left(G_{n:n}(b)\right)^{n}\leq F_{n:n}(b)\leq G_{n:n}(b)
+\]
+\\
+So the profit function is bounded by, 
+\[
+\int_{0}^{\infty}max\{r,v\}dG_{n-1:n}(v)-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})\leq\pi_{n}(r)\leq\int_{0}^{\infty}max\{r,v\}dG_{n:n}(v)-v_{0}-G_{n:n}(r)(r-v_{0})
+\]
+which can be simplified to be just estimating, for all $0\leq r\leq\bar{V}$
+(pointwise), 
+\[
+\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{lb,i}\}-v_{0}-G_{n:n}(r)(r-v_{0})\leq\pi_{n}(r)\leq\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{ub,i}\}-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})
+\]
+where $v_{lb,i}$ is drawn from $V_{lb}\sim G_{n-1:n}^{-1}(U)$ and
+$v_{ub,i}$ is drawn from $V_{ub}\sim G_{n:n}^{-1}(U)$. We can set
+$N$ to be large, say 100000.\\
+\\
+Meanwhile, the Haile-Tamer profit bounds are, 
+\[
+\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{lb,i}\}-v_{0}-\phi_{n:n}^{-1}\left(\underset{j\in\{n-1,n\}}{\text{min}}\phi_{j:n}(G_{n-1:n})\right)(r-v_{0})\leq\pi_{n}^{HT}(r)\leq\frac{1}{N}\sum_{i=1}^{N}max\{r,v_{ub,i}\}-v_{0}-\phi_{n-1:n}\left(G_{n:n}(r)\right)^{n}(r-v_{0})
+\]
+where $v_{lb,i}$ is drawn from $H^{-1}(U)$ where $H(U)=\phi_{n-1:n}\left(G_{n:n}(U)\right)^{n}$
+and $v_{ub,i}$ is drawn from $V_{ub}\sim G_{n:n}^{-1}(U)$. So only
+the lower bounds differ between the Haile-Tamer and Aradillas-Lopez
+methods.\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+
+\end{document}
