@@ -142,11 +142,29 @@ def Fnn_variedN_KDE(n, v, max_bid_dicts, KDEs):
 
 ##### 5. Estimation of the Expected Profit. #####
 # Method: Using KDE to smooth the bounds
-def compute_expected_profit_KDE(n, r, max_bid_dicts, ub_v, v0, variedN=False, KDEs=None):
-    v_n1n, ghat_KDE_n1n, h = ghat_KDE(max_bid_dicts,n-1,n, ker='gaussian', bandwidth="ISJ")
-    v_nn, ghat_KDE_nn, h = ghat_KDE(max_bid_dicts,n,n, ker='gaussian', bandwidth="ISJ")
-
-    G_hat_vnn = KDE_pdf_to_cdf(v_nn, ghat_KDE_nn)
+def compute_expected_profit_KDE(
+    n, 
+    r, 
+    max_bid_dicts, 
+    ub_v, 
+    v0, 
+    
+    # KDE parameters (this is constant across any r)
+    v_n1n,
+    ghat_KDE_n1n,
+    v_nn,
+    ghat_KDE_nn,
+    G_hat_vnn,
+    
+    # parameters for estimating without integrating
+    b_nns,
+    b_n1ns,
+    
+    # optional parameters
+    integral_method=False,
+    variedN=False, 
+    KDEs=None
+    ):
 
     if variedN==False:
         fnn_l, fnn_u = Fnn_KDE(n,r, v_nn, G_hat_vnn)
@@ -155,20 +173,30 @@ def compute_expected_profit_KDE(n, r, max_bid_dicts, ub_v, v0, variedN=False, KD
         ##### Original \bar{N} method in AL.(without intersecting bounds)
         fnn_l, fnn_u, phi, Fm1ms = Fnn_variedN_KDE(n,r, max_bid_dicts, KDEs)
         L = len([d for d in max_bid_dicts if d['n'] >= n])
-        
-    def f_ub(v):
-        return max(r,v) * ghat_KDE_nn[find_nearest(v_nn, v)]
-    def f_lb(v):
-        return max(r,v) * ghat_KDE_n1n[find_nearest(v_n1n, v)]
     
-    # 100 is an arbitrarily large number for the integral.
-    ub = integrate.quad(f_ub,0,85)[0] - v0 - fnn_l * (r - v0)
-    lb = integrate.quad(f_lb,0,85)[0] - v0 - fnn_u * (r - v0)
+    
+    # if using integral method
+    if integral_method==True:
+        def f_ub(v):
+            return max(r,v) * ghat_KDE_nn[find_nearest(v_nn, v)]
+        def f_lb(v):
+            return max(r,v) * ghat_KDE_n1n[find_nearest(v_n1n, v)]
+        
+        # 100 is an arbitrarily large number for the integral.
+        term1_ub = integrate.quad(f_ub,0,85)[0]
+        term1_lb = integrate.quad(f_lb,0,85)[0]
+    else:   # use expectation method instead
+
+        term1_ub = np.mean([max(r,b) for b in b_nns])
+        term1_lb = np.mean([max(r,b) for b in b_n1ns])
+        
+    ub = term1_ub - v0 - fnn_l * (r - v0)
+    lb = term1_lb - v0 - fnn_u * (r - v0)
 
     # inference
     if variedN==False:
         ci_lb, ci_ub = ALinf.CI_out(ub, lb, L, max_bid_dicts, n, r, v0, fnn_l, alpha=0.05)
     else: 
-        ci_lb, ci_ub = ALinf.CI_out_varyingN(ub, lb, L, max_bid_dicts, n, r, v0, phi,Fm1ms,h, alpha=0.05)
+        ci_lb, ci_ub = ALinf.CI_out_varyingN(ub, lb, L, max_bid_dicts, n, r, v0, phi,Fm1ms, alpha=0.05)
     
     return lb,ub,ci_lb,ci_ub

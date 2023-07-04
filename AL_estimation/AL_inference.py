@@ -177,7 +177,7 @@ def CI_out(pi_U, pi_L, L, max_bid_dicts, n, r, v0, phi, alpha=0.05):
     return ci_lb, ci_ub
 
 
-def CI_out_varyingN(pi_U, pi_L, L, max_bid_dicts, n, r, v0, phi,Fm1ms, h, alpha=0.05):
+def CI_out_varyingN(pi_U, pi_L, L, max_bid_dicts, n, r, v0, phi,Fm1ms, alpha=0.05):
     sigma_hat_Up = math.sqrt(sigma_hat_high2_varyingN(max_bid_dicts, n, r, v0, phi, Fm1ms))
     sigma_hat_Low = math.sqrt(sigma_hat_low2_varyingN(max_bid_dicts, n, r, v0, phi, Fm1ms))
     Lambda_hat = lambda_hat(pi_U, pi_L)

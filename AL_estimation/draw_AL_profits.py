@@ -19,20 +19,38 @@ def compute_v0(dicts):
         ratios.append(d['low_rel_high'])
     return np.median(ratios)
 
-def compute_bounds(X,n, data_dicts, UB_V, V0):
+def get_KDE_parameters(data_dicts, n):
+    v_n1n, ghat_KDE_n1n, h = AL.ghat_KDE(data_dicts,n-1,n, ker='gaussian', bandwidth="ISJ")
+    v_nn, ghat_KDE_nn, h = AL.ghat_KDE(data_dicts,n,n, ker='gaussian', bandwidth="ISJ")
+    G_hat_vnn = AL.KDE_pdf_to_cdf(v_nn, ghat_KDE_nn)
+    return v_n1n, ghat_KDE_n1n, v_nn, ghat_KDE_nn, G_hat_vnn
+
+def compute_bounds(X,n, data_dicts, ub_v, v0):
     profits_lb_AL = []
     profits_ub_AL = []
+    
+    # Get the KDE parameters
+    v_n1n, ghat_KDE_n1n, v_nn, ghat_KDE_nn, G_hat_vnn = get_KDE_parameters(data_dicts, n)
+    
     for r in tqdm(X):
-        p_AL_lb, p_AL_ub = AL.compute_expected_profit_KDE(n, r, data_dicts, UB_V, V0, variedN=False)
+        p_AL_lb, p_AL_ub = AL.compute_expected_profit_KDE(n, r, data_dicts, ub_v, v0, 
+                                                          v_n1n,ghat_KDE_n1n,v_nn,ghat_KDE_nn,G_hat_vnn,
+                                                          integral_method=False, variedN=False, KDEs=None)
         profits_lb_AL.append(p_AL_lb)
         profits_ub_AL.append(p_AL_ub)
     return profits_lb_AL, profits_ub_AL
-        
-def compute_bounds_vN(X,n, data_dicts, UB_V, V0, KDEs):
+
+def compute_bounds_vN(X,n, data_dicts, ub_v, v0, KDEs):
     profits_lb_AL_vN = []
     profits_ub_AL_vN = []
+    
+    # Get the KDE parameters
+    v_n1n, ghat_KDE_n1n, v_nn, ghat_KDE_nn, G_hat_vnn = get_KDE_parameters(data_dicts, n)
+    
     for r in tqdm(X):
-        p_AL_lb, p_AL_ub = AL.compute_expected_profit_KDE(n, r, data_dicts, UB_V, V0, variedN=True, KDEs=KDEs)
+        p_AL_lb, p_AL_ub = AL.compute_expected_profit_KDE(n, r, data_dicts, ub_v, v0, 
+                                                          v_n1n,ghat_KDE_n1n,v_nn,ghat_KDE_nn,G_hat_vnn,
+                                                          integral_method=False, variedN=True, KDEs=KDEs)
         profits_lb_AL_vN.append(p_AL_lb)
         profits_ub_AL_vN.append(p_AL_ub)
     return profits_lb_AL_vN, profits_ub_AL_vN
