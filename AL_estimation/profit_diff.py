@@ -4,11 +4,11 @@
 
 import numpy as np
 import AL_profits as AL
+import non_equilibrium_profits as NEP
 
-def compute_expected_profit_diff(n,r,max_bid_dicts,v0,
-                                 v_n1n,ghat_KDE_n1n,v_nn,ghat_KDE_nn,G_hat_vnn,
+def compute_expected_profit_diff(n,r,v0,
+                                 v_nn,G_hat_vnn,
                                  b_nns, b_n1ns,
-                                 KDEs=None 
                                 ):
     
     fnn_l, fnn_u = AL.Fnn_KDE(n,r, v_nn, G_hat_vnn)
@@ -19,3 +19,13 @@ def compute_expected_profit_diff(n,r,max_bid_dicts,v0,
     lb = term1_lb - fnn_u * (r - v0)
     
     return lb, ub
+
+def exact_profit_diff(n,r,max_bid_dicts, v_nn, g_hat_v, G_hat_vnn, v0):
+    exp_bnn_geq_r = NEP.calc_positive_term(max_bid_dicts, n, r, v_nn, g_hat_v)
+    exp_bnn_geq_v0 = NEP.calc_positive_term(max_bid_dicts, n, v0, v_nn, g_hat_v)
+    term1 = exp_bnn_geq_r - exp_bnn_geq_v0
+    
+    term2 = v0 * (G_hat_vnn[NEP.find_nearest(v_nn, v0)]
+                  - G_hat_vnn[NEP.find_nearest(v_nn, r)])
+    
+    return term1 - term2
