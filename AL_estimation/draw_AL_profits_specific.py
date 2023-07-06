@@ -10,9 +10,7 @@ matplotlib.rcParams.update({'font.size': 15})
 
 import pickle
 import seaborn as sns
-import sys
-import os
-from pathlib import Path
+
 
 ### 1. Helping Functions
 def compute_v0(dicts):
@@ -332,24 +330,3 @@ def run_AL_profits_specificData(INPATH, OUTPATH, RESERVE_PATH, UB_V=15, num_poin
         allbounds.append({'N': n, 'lb': profits_lb_AL, 'ub': profits_ub_AL, 'count': len([d for d in data_dicts if d['n'] == n])})
 
     return X, allbounds_vN
-
-
-f = sys.argv[1]
-
-print("Working on {} now...".format(f))
-INPATH = str(f)
-OUTPATH = "/Users/brucewen/Desktop/honors_thesis/estimation/combined_data/categorized_data_results_withXi/" + INPATH.split("/")[-1].split(".")[0] + "/"
-SELECT_RESERVE_PATH = "/Users/brucewen/Desktop/honors_thesis/selecting reserve/code/computed_bounds/"
-if Path(OUTPATH).is_dir()==False:
-    os.mkdir(OUTPATH)
-
-
-print(OUTPATH)
-
-# X, allbounds_vN = run_AL_profits_specificData(INPATH, OUTPATH, SELECT_RESERVE_PATH, UB_V=10, num_points=500)
-# out = (X, allbounds_vN)
-# pickle.dump(out, open(OUTPATH + "allbounds_vN.p", "wb"))
-
-X, bounds_vN_n3 = run_AL_profits_specificN_Data(INPATH, OUTPATH, n=3, UB_V=5, num_points=1000)
-out = (X, bounds_vN_n3)
-pickle.dump(out, open(OUTPATH + "bounds_vN_n3.p", "wb"))

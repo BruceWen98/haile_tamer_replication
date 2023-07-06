@@ -12,11 +12,26 @@ def compute_expected_profit_diff(n,r,v0,
                                 ):
     
     fnn_l, fnn_u = AL.Fnn_KDE(n,r, v_nn, G_hat_vnn)
-    term1_ub = np.mean([max(r,b) - max(v0,b) for b in b_nns])
-    term1_lb = np.mean([max(r,b) - max(v0,b) for b in b_n1ns])
     
-    ub = term1_ub - fnn_l * (r - v0)
-    lb = term1_lb - fnn_u * (r - v0)
+    i1 = np.mean([max(r,b) for b in b_nns])
+    i2 = np.mean([max(v0,b) for b in b_n1ns])
+    i3 = np.mean([max(r,b) for b in b_n1ns])
+    i4 = np.mean([max(v0,b) for b in b_nns])
+    
+    ub = (i1-i2) - fnn_l*(r-v0)
+    lb = (i3-i4) - fnn_u*(r-v0)
+    
+    return lb, ub
+
+def compute_expected_profit_diffAL(n,r,v0,
+                                 v_nn,G_hat_vnn,
+                                 b_nns, b_n1ns,
+                                  ):
+    fnn_l, fnn_u = AL.Fnn_KDE(n,r, v_nn, G_hat_vnn)
+    integral = np.mean([max(r,b)-max(v0,b) for b in b_nns])
+    
+    lb = integral - fnn_u*(r-v0)
+    ub = integral - fnn_l*(r-v0)
     
     return lb, ub
 

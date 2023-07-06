@@ -89,15 +89,3 @@ def run_AL_profits_specificN_Data(INPATH, OUTPATH, n, UB_V=15, num_points=1000):
     plt.plot(X,profits,color='tab:blue',linewidth=2, label='lb')    # marker=6 is a caretup
     plt.savefig(OUTPATH + "profits_n{}_nonEquilibrium.png".format(n))
     return
-
-
-f = sys.argv[1]
-print("Working on {} now...".format(f))
-INPATH = str(f)
-OUTPATH = "/Users/brucewen/Desktop/honors_thesis/estimation/combined_data/categorized_data_results_withXi/" + INPATH.split("/")[-1].split(".")[0] + "/"
-SELECT_RESERVE_PATH = "/Users/brucewen/Desktop/honors_thesis/selecting reserve/code/computed_bounds/"
-if Path(OUTPATH).is_dir()==False:
-    os.mkdir(OUTPATH)
-
-
-run_AL_profits_specificN_Data(INPATH, OUTPATH, n=3, UB_V=10, num_points=500)
