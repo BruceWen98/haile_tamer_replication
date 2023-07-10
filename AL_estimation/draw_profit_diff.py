@@ -7,25 +7,27 @@ import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
-import sys
-import os
-from pathlib import Path
 
 def compute_profit_diff_bounds(X,n,data_dicts,v0):
     diff_lb = []
     diff_ub = []
+    diff_ub_withoutCorrection = []
     b_nns, b_n1ns = DAPS.get_bnns_bn1ns(data_dicts, n)
     
     _,_,v_nn,_,_,G_hat_vnn = DAPS.get_KDE_parameters(data_dicts, n)
     
     for r in tqdm(X):
-        lb, ub = PD.compute_expected_profit_diff(n,r,v0,
+        lb, ub = PD.compute_expected_profit_diff_withCorrection(n,r,v0,
+                                                 v_nn, G_hat_vnn,
+                                                 b_nns, b_n1ns)
+        _, ub_withoutCorrection = PD.compute_expected_profit_diff(n,r,v0,
                                                  v_nn, G_hat_vnn,
                                                  b_nns, b_n1ns)
         diff_lb.append(lb)
         diff_ub.append(ub)
+        diff_ub_withoutCorrection.append(ub_withoutCorrection)
     
-    return diff_lb, diff_ub
+    return diff_lb, diff_ub, diff_ub_withoutCorrection
 
 def compute_profit_diff_bounds_usingAL(X,n,data_dicts,v0):
     diff_lb = []
@@ -75,7 +77,7 @@ def draw_profit_diff_specificN(INPATH, OUTPATH, n, ub_v=10, num_points=1000):
     print(len([d for d in data_dicts if d['n'] == n]))
 
     try:
-        diff_lb, diff_ub = compute_profit_diff_bounds(X,n,data_dicts,v0)
+        diff_lb, diff_ub, diff_ub_withoutCorrection = compute_profit_diff_bounds(X,n,data_dicts,v0)
         diff = compute_exact_profit_diff(X,n, data_dicts, v0)
     except ValueError as e:     #ValueError: Root finding did not converge. Need more data.
         print(e)
@@ -91,6 +93,7 @@ def draw_profit_diff_specificN(INPATH, OUTPATH, n, ub_v=10, num_points=1000):
     plt.plot(X,diff,color='black',linewidth=2,linestyle='dashdot', label='non-equilibrium')
     plt.plot(X,diff_ub,color='tab:blue',linewidth=2, label='ub')
     plt.plot(X,diff_lb,color='tab:blue',linewidth=2, label='lb')
+    plt.plot(X,diff_ub_withoutCorrection,color='tab:orange',linewidth=2, label='ub without correction')
     plt.legend()
     plt.savefig(OUTPATH + "profit_diff_n{}.png".format(n))
     return

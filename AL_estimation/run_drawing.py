@@ -24,7 +24,7 @@ if Path(OUTPATH).is_dir()==False:
 print(OUTPATH)
 
 if option == "DAPS":
-    DAPS.run_AL_profits_specificN_Data(INPATH, OUTPATH, n=3, UB_V=5, num_points=1000)
+    DAPS.run_AL_profits_specificN_Data(INPATH, OUTPATH, n=3, UB_V=5, num_points=100)
 elif option == "DNEP":
     DNEP.run_AL_profits_specificN_Data(INPATH, OUTPATH, n=3, UB_V=10, num_points=500)
 elif option == "DPD":

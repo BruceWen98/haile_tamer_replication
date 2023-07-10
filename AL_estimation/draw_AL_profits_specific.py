@@ -89,6 +89,20 @@ def compute_non_equilibrium_exact(X,n, data_dicts, ub_v, v0):
     
     return profits
 
+def compute_bounds_PureNonEquilibrium_bounds(X,n, data_dicts, ub_v, v0):
+    profits_lb = []
+    profits_ub = []
+    
+    # Get the KDE parameters
+    v_n1n, _, v_nn, _, G_hat_vn1n, G_hat_vnn = get_KDE_parameters(data_dicts, n)
+    
+    for r in tqdm(X):
+        p_lb, p_ub = NEP.compute_exp_profit_PureNonEquilibrium_bounds(n, r, data_dicts, v_nn, G_hat_vnn, v0)
+        profits_lb.append(p_lb)
+        profits_ub.append(p_ub)
+    
+    return profits_lb, profits_ub
+
 def compute_bounds_vN(X,n, data_dicts, ub_v, v0, KDEs):
     profits_lb_AL_vN = []
     profits_ub_AL_vN = []
@@ -202,12 +216,17 @@ def run_AL_profits_specificN_Data(INPATH, OUTPATH, n, UB_V=15, num_points=1000):
     
     # Plot the non-equilibrium exact
     profits_exact_non_equilibrium = compute_non_equilibrium_exact(X, n, data_dicts, UB_V, V0)
-    plt.plot(X,profits_exact_non_equilibrium, color='black',linewidth=1,label='non-equilibrium')
+    plt.plot(X,profits_exact_non_equilibrium, color='black',linewidth=1,label='non-equil point')
     
     # Plot the non-equilibrium bounds
     profits_lb_non_equilibrium, profits_ub_non_equilibrium = compute_bounds_Bnn(X, n, data_dicts, UB_V, V0)
     plt.plot(X,profits_lb_non_equilibrium, color='tab:green',linewidth=2, label='lb (winning bid)')
     plt.plot(X,profits_ub_non_equilibrium, color='tab:green',linewidth=2, label='ub (winning bid)')
+    
+    # Plot the PureNonEquilibrium bounds
+    profits_lb_PNE, profits_ub_PNE = compute_bounds_PureNonEquilibrium_bounds(X, n, data_dicts, UB_V, V0)
+    plt.plot(X,profits_lb_PNE, color='tab:orange',linewidth=2, label='lb (non-equil)', alpha=0.6)
+    plt.plot(X,profits_ub_PNE, color='tab:orange',linewidth=2, label='ub (non-equil)', alpha=0.6)
     
     plt.legend(loc='upper right')
     plt.savefig(OUTPATH + "profits_n{}.png".format(n))
