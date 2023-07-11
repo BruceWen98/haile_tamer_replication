@@ -50,12 +50,17 @@ def calc_Tn(max_bid_dicts, n):
     return count
 
 # Search for the nearest idx(value) in a sorted array, i.e. v_n1n or v_nn. This is to the left of the value.
-def find_nearest(array,value):
-    idx = np.searchsorted(array, value, side="left")
-    if idx > 0 and (idx == len(array) or math.fabs(value - array[idx-1]) < math.fabs(value - array[idx])):
-        return idx-1
-    else:
-        return idx
+def find_nearest(arr, x):
+    low = 0
+    high = len(arr) - 1
+
+    while low < high:
+        mid = (low + high + 1) // 2
+        if arr[mid] > x:
+            high = mid - 1
+        else:
+            low = mid
+    return low
 
 # For Kernel Density Estimation
 def ghat_KDE(max_bid_dicts,i,n, ker='gaussian', bandwidth="ISJ"): # ISJ is the improved Sheather-Jones algorithm

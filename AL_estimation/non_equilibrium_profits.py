@@ -10,6 +10,32 @@ def calc_N_set(max_bid_dicts):
         list_num_bidders.append(num_bidders)
     return list(np.unique(list_num_bidders))
 
+def find_nearest_below(arr, x):
+    low = 0
+    high = len(arr) - 1
+
+    while low < high:
+        mid = (low + high + 1) // 2
+        if arr[mid] > x:
+            high = mid - 1
+        else:
+            low = mid
+    return low
+
+def find_nearest_above(arr, x):
+    low = 0
+    high = len(arr) - 1
+
+    while low < high:
+        mid = (low + high) // 2
+        if arr[mid] <= x:
+            low = mid + 1
+        else:
+            high = mid
+    if low == len(arr) - 1 and arr[low] <= x:  # x is larger than all elements
+        return low
+    return high  # otherwise return the index of the element just above x
+
 # estimate the positive term
 def calc_positive_term(max_bid_dicts, n, r, v_nn, g_hat_v, integral_method = False):
     b_nns = []
@@ -25,7 +51,7 @@ def calc_positive_term(max_bid_dicts, n, r, v_nn, g_hat_v, integral_method = Fal
         return np.mean(b_nns)
     else:
         def f(b):
-            return b * g_hat_v[find_nearest(v_nn, b)]
+            return b * g_hat_v[find_nearest_below(v_nn, b)]
         return integrate.quad(f, r, np.inf)[0]
     
     
@@ -52,16 +78,9 @@ def KDE_pdf_to_cdf(v, g_hat_v):
         G_hat_v[k] = np.sum(g_hat_v[:k])/sum_g_hat_v
     return G_hat_v
 
-def find_nearest(array,value):
-    idx = np.searchsorted(array, value, side="left")
-    if idx > 0 and (idx == len(array) or math.fabs(value - array[idx-1]) < math.fabs(value - array[idx])):
-        return idx-1
-    else:
-        return idx
-
 def compute_exp_profit_non_equil(n,r,max_bid_dicts, v_nn, g_hat_v, G_hat_vnn, v0):
     term1 = calc_positive_term(max_bid_dicts, n, r, v_nn, g_hat_v)
-    term2 = v0 * (1 - G_hat_vnn[find_nearest(v_nn, r)])
+    term2 = v0 * (1 - G_hat_vnn[find_nearest_below(v_nn, r)])
     return term1 - term2
 
 
@@ -75,30 +94,35 @@ def inv_phi(n, phi):
     return n*(n-1) * integrate.quad(f, 0, phi)[0]
 
 def Bnn_tilde_transform(n, b_nn, v_nn, G_hat_vnn):
-    b1 = G_hat_vnn[find_nearest(v_nn, b_nn)] ** (1/n)
+    b1 = G_hat_vnn[find_nearest_below(v_nn, b_nn)] ** (1/n)
     b2 = inv_phi(n, b1)
-    b_nn_tilde = v_nn[find_nearest(G_hat_vnn, b2)]
+    b_nn_tilde = v_nn[find_nearest_above(G_hat_vnn, b2)]
     return b_nn_tilde
 
-def non_eq_LB(b_nns,b_n1ns, r, v0):
-    prob_bnn_GEQr = np.mean([1 if b_nn>=r else 0 for b_nn in b_nns])
-    prob_bn1n_GEQr = np.mean([1 if b_n1n>=r else 0 for b_n1n in b_n1ns])
+def non_eq_LB(v_nn,G_hat_vnn,v_n1n,G_hat_vn1n,
+              b_n1ns, r, v0):
+    prob_bnn_GEQr = 1 - G_hat_vnn[find_nearest_below(v_nn,r)]
+    prob_bn1n_GEQr = 1 - G_hat_vn1n[find_nearest_below(v_n1n,r)]
 
     # if bn1n>=r then bn1n, else 0
     exp_val = np.mean( [b_n1n if b_n1n>=r else 0 for b_n1n in b_n1ns] )
 
     return prob_bnn_GEQr*(r-v0) + exp_val - prob_bn1n_GEQr*r
 
-def non_eq_UB(b_nns,b_nn_tildes,r,v0):    
-    prob_bnn_GEQr = np.mean([1 if b_nn>=r else 0 for b_nn in b_nns])
-    prob_bnn_tilde_GEQr = np.mean([1 if b_nn_tilde>=r else 0 for b_nn_tilde in b_nn_tildes])
+def non_eq_UB(v_nn,G_hat_vnn,v_nn_tilde,G_hat_vnn_tilde,
+              b_nns,b_nn_tildes,r,v0):    
+    prob_bnn_GEQr = 1 - G_hat_vnn[find_nearest_below(v_nn,r)]
+    prob_bnn_tilde_GEQr = 1 - G_hat_vnn_tilde[find_nearest_below(v_nn_tilde,r)]
     
     # if bnn_>=r then bnn_tilde, else 0
     exp_tilde = np.mean([b_nn_tilde if b_nn>=r else 0 for b_nn, b_nn_tilde in zip(b_nns, b_nn_tildes)])
     
     return prob_bnn_tilde_GEQr*(r-v0) + exp_tilde - prob_bnn_GEQr*r
 
-def compute_exp_profit_PureNonEquilibrium_bounds(n,r,max_bid_dicts, v_nn, G_hat_vnn, v0):
+def compute_exp_profit_PureNonEquilibrium_bounds(n,r,v0,max_bid_dicts, 
+                                                 v_nn,G_hat_vnn,v_n1n,G_hat_vn1n,
+                                                 v_nn_tilde,G_hat_vnn_tilde,
+                                                 b_nns,b_n1ns,b_nn_tildes):
     b_nns = []
     b_n1ns = []
     for max_bid_dict in max_bid_dicts:
@@ -107,8 +131,10 @@ def compute_exp_profit_PureNonEquilibrium_bounds(n,r,max_bid_dicts, v_nn, G_hat_
             b_n1n = min( max_bid_dict.get('1'), max_bid_dict.get('2') )
             b_nns.append(b_nn)
             b_n1ns.append(b_n1n)
-    b_nn_tildes = [Bnn_tilde_transform(n, b_nn, v_nn, G_hat_vnn) for b_nn in b_nns]
+    # b_nn_tildes = [Bnn_tilde_transform(n, b_nn, v_nn, G_hat_vnn) for b_nn in b_nns]
     
-    lb = non_eq_LB(b_nns,b_n1ns, r, v0)
-    ub = non_eq_UB(b_nns,b_nn_tildes,r,v0)
+    lb = non_eq_LB(v_nn,G_hat_vnn,v_n1n,G_hat_vn1n,
+              b_n1ns, r, v0)
+    ub = non_eq_UB(v_nn,G_hat_vnn,v_nn_tilde,G_hat_vnn_tilde,
+              b_nns,b_nn_tildes,r,v0)
     return lb, ub

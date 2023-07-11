@@ -1,10 +1,58 @@
-from KDEpy import FFTKDE    # Kernel Density Estimation
-from scipy.stats import norm
 import numpy as np
 import math
-import pickle
+    
+def find_nearest_below(arr, x):
+    low = 0
+    high = len(arr) - 1
 
-ds = pickle.load(open("/Users/brucewen/Desktop/honors_thesis/estimation/combined_data/categorized_data_withXi/art_imp20_nyc_high_159obs.p", "rb"))
-ds = ds['data']
+    while low < high:
+        mid = (low + high + 1) // 2
+        if arr[mid] > x:
+            high = mid - 1
+        else:
+            low = mid
+    return low
 
-print(sorted([d['1'] - d['2'] for d in ds]))
+def find_nearest_above(arr, x):
+    low = 0
+    high = len(arr) - 1
+
+    while low < high:
+        mid = (low + high) // 2
+        if arr[mid] <= x:
+            low = mid + 1
+        else:
+            high = mid
+    if low == len(arr) - 1 and arr[low] <= x:  # x is larger than all elements
+        return low
+    return high  # otherwise return the index of the element just above x
+
+
+## TESTING
+print(find_nearest_below([0.1,0.15,0.24,0.35,0.53,0.75], 100))
+#5
+
+print(find_nearest_below([0.1,0.15,0.24,0.35,0.53,0.75], 0.75))
+#5
+
+print(find_nearest_below([0.1,0.15,0.24,0.35,0.53,0.75], 0.53))
+# 4
+
+print(find_nearest_below([0.1,0.15,0.24,0.35,0.53,0.75], 0.23))
+# 1
+
+
+print(find_nearest_above([0.1,0.15,0.24,0.35,0.53,0.75], 0.76))
+#5
+
+print(find_nearest_above([0.1,0.15,0.24,0.35,0.53,0.75], 0.75))
+#5
+
+print(find_nearest_above([0.1,0.15,0.24,0.35,0.53,0.75], 0.36))
+# 4
+
+print(find_nearest_above([0.1,0.15,0.24,0.35,0.53,0.75], 0.10001))
+# 1
+
+print(find_nearest_above([0.1,0.15,0.24,0.35,0.53,0.75], 0.01))
+# 0

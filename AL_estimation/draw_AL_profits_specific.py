@@ -10,6 +10,7 @@ matplotlib.rcParams.update({'font.size': 15})
 
 import pickle
 import seaborn as sns
+from KDEpy import FFTKDE    # Kernel Density Estimation
 
 
 ### 1. Helping Functions
@@ -89,15 +90,31 @@ def compute_non_equilibrium_exact(X,n, data_dicts, ub_v, v0):
     
     return profits
 
+def get_KDE_bnn_tilde(n,b_nns,v_nn,G_hat_vnn):
+    b_nn_tildes = [NEP.Bnn_tilde_transform(n,b_nn,v_nn,G_hat_vnn) for b_nn in b_nns]
+    
+    # Kernel for b_nns_tilde
+    kde = FFTKDE(kernel='gaussian', bw="ISJ")
+    v_nn_tilde, g_hat_vnn_tilde = kde.fit(b_nn_tildes).evaluate()
+    G_hat_vnn_tilde = AL.KDE_pdf_to_cdf(v_nn_tilde, g_hat_vnn_tilde)
+    return b_nn_tildes, v_nn_tilde, g_hat_vnn_tilde, G_hat_vnn_tilde
+
 def compute_bounds_PureNonEquilibrium_bounds(X,n, data_dicts, ub_v, v0):
     profits_lb = []
     profits_ub = []
     
+    b_nns, b_n1ns = get_bnns_bn1ns(data_dicts, n)
+    
     # Get the KDE parameters
     v_n1n, _, v_nn, _, G_hat_vn1n, G_hat_vnn = get_KDE_parameters(data_dicts, n)
+    b_nn_tildes, v_nn_tilde, _, G_hat_vnn_tilde = get_KDE_bnn_tilde(n,b_nns,v_nn,G_hat_vnn)
     
+    print(np.mean([b-a for a,b in zip(b_nns,b_nn_tildes)]))
     for r in tqdm(X):
-        p_lb, p_ub = NEP.compute_exp_profit_PureNonEquilibrium_bounds(n, r, data_dicts, v_nn, G_hat_vnn, v0)
+        p_lb, p_ub = NEP.compute_exp_profit_PureNonEquilibrium_bounds(n,r,v0,data_dicts, 
+                                                 v_nn,G_hat_vnn,v_n1n,G_hat_vn1n,
+                                                 v_nn_tilde,G_hat_vnn_tilde,
+                                                 b_nns,b_n1ns,b_nn_tildes)
         profits_lb.append(p_lb)
         profits_ub.append(p_ub)
     
