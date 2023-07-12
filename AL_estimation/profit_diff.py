@@ -19,8 +19,8 @@ def compute_expected_profit_diff(n,r,r0,v0,
     i3 = np.mean([max(r,b) for b in b_n1ns])
     i4 = np.mean([max(r0,b) for b in b_nns])
     
-    ub = (i1-i2) - (r-v0)*fnnL_r + (r0-v0)*fnnU_r0
-    lb = (i3-i4) - (r-v0)*fnnU_r + (r0-v0)*fnnL_r0
+    ub = (i1-i2) - (r-v0)*fnnL_r + (r0-v0)*fnnL_r0
+    lb = (i3-i4) - (r-v0)*fnnU_r + (r0-v0)*fnnU_r0
     return lb, ub
 
 def LPsolver(r,r0,v0,
@@ -48,7 +48,7 @@ def LPsolver(r,r0,v0,
 def compute_expected_profit_diff_r0(n,r,r0,v0,
                                     v_nn,G_hat_vnn,
                                     b_nns, b_n1ns,
-                                    ):
+                                    extraConstraint=False):
     fnnL_r, fnnU_r = AL.Fnn_KDE(n,r, v_nn, G_hat_vnn)
     if fnnL_r > fnnU_r:
         fnnL_r = fnnU_r
@@ -59,11 +59,11 @@ def compute_expected_profit_diff_r0(n,r,r0,v0,
     i4 = np.mean([max(r0,b) for b in b_nns])
     
     if r>=r0:
-        B_u = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=True, max=True)
-        B_l = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=True, max=False)
+        B_u = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=True, max=True, extraConstraint=extraConstraint)
+        B_l = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=True, max=False, extraConstraint=extraConstraint)
     else:
-        B_u = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=False, max=True)
-        B_l = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=False, max=False)
+        B_u = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=False, max=True, extraConstraint=extraConstraint)
+        B_l = LPsolver(r,r0,v0,fnnL_r, fnnU_r, fnnL_r0, fnnU_r0, XgeqY=False, max=False, extraConstraint=extraConstraint)
         
     ub = (i1-i2) + B_u
     lb = (i3-i4) + B_l

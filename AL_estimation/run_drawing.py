@@ -28,4 +28,4 @@ if option == "DAPS":
 elif option == "DNEP":
     DNEP.run_AL_profits_specificN_Data(INPATH, OUTPATH, n=3, UB_V=10, num_points=500)
 elif option == "DPD":
-    DPD.draw_profit_diff_specificN(INPATH, OUTPATH, n=3, ub_v=5, num_points=50)
+    DPD.draw_profit_diff_specificN(INPATH, OUTPATH, n=3, ub_v=5, num_points=250)

@@ -20,10 +20,10 @@ def compute_profit_diff_bounds(X,n,data_dicts,r0,v0):
     for r in tqdm(X):
         lb, ub = PD.compute_expected_profit_diff_r0(n,r,r0,v0,
                                                  v_nn, G_hat_vnn,
-                                                 b_nns, b_n1ns)
-        lb_woCorrection, ub_woCorrection = PD.compute_expected_profit_diff(n,r,r0,v0,
+                                                 b_nns, b_n1ns, extraConstraint=True)
+        lb_woCorrection, ub_woCorrection = PD.compute_expected_profit_diff_r0(n,r,r0,v0,
                                                  v_nn, G_hat_vnn,
-                                                 b_nns, b_n1ns)
+                                                 b_nns, b_n1ns, extraConstraint=False)
         diff_lb.append(lb)
         diff_ub.append(ub)
         diff_lb_woCorrection.append(lb_woCorrection)
@@ -68,7 +68,7 @@ def draw_profit_diff_specificN(INPATH, OUTPATH, n, ub_v=10, num_points=1000):
     print("Values of N = ", AL.calc_N_set(data_dicts))
     print("Size of this Data = ", len(data_dicts))
 
-    v0 = 1
+    v0 = compute_r0(data_dicts)
     r0 = compute_r0(data_dicts)
     X = np.linspace(0, ub_v, num_points)
     
@@ -90,10 +90,10 @@ def draw_profit_diff_specificN(INPATH, OUTPATH, n, ub_v=10, num_points=1000):
     plt.ylabel(r'Expected Profit Difference relative to $r_0$')
     plt.ylim(-0.4, 0.4)
     plt.plot(X,diff,color='black',linewidth=2,linestyle='dashdot', label='non-equilibrium')
-    plt.plot(X,diff_ub,color='tab:blue',linewidth=2, label='ub (LP sol)')
-    plt.plot(X,diff_lb,color='tab:blue',linewidth=2, label='lb (LP sol)')
-    plt.plot(X,diff_lb_woCorrection,color='tab:orange',linewidth=2, label='lb w/o correction')
-    plt.plot(X,diff_ub_woCorrection,color='tab:orange',linewidth=2, label='ub w/o correction')
+    plt.plot(X,diff_ub,color='tab:blue',linewidth=2, alpha=0.7, label=r'ub (LP sol w $F_{n:n}$ constraint)')
+    plt.plot(X,diff_lb,color='tab:blue',linewidth=2, alpha=0.7, label=r'lb (LP sol w $F_{n:n}$ constraint)')
+    plt.plot(X,diff_lb_woCorrection,color='tab:orange',linewidth=2, alpha=0.7, label='lb (LP sol)')
+    plt.plot(X,diff_ub_woCorrection,color='tab:orange',linewidth=2, alpha=0.7, label='ub (LP sol)')
     plt.legend()
     
     # Print r0,v0
