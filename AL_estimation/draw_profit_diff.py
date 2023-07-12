@@ -68,7 +68,7 @@ def draw_profit_diff_specificN(INPATH, OUTPATH, n, ub_v=10, num_points=1000):
     print("Values of N = ", AL.calc_N_set(data_dicts))
     print("Size of this Data = ", len(data_dicts))
 
-    v0 = compute_r0(data_dicts)
+    v0 = 1
     r0 = compute_r0(data_dicts)
     X = np.linspace(0, ub_v, num_points)
     
